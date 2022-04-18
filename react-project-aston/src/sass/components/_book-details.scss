@@ -1,0 +1,12 @@
+.book-details {
+  img {
+    height: 300px;
+    object-fit: contain;
+  }
+  .book-description {
+    flex-basis: 60%;
+    h2 {
+      margin-top: 20px;
+    }
+  }
+}

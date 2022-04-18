@@ -1,0 +1,7 @@
+.book-list {
+  @include flex-center();
+  column-gap: 30px;
+  row-gap: 20px;
+  flex-wrap: wrap;
+  margin: 40px auto;
+}

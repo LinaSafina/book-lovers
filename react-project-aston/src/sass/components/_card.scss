@@ -1,0 +1,13 @@
+.card {
+  display: flex;
+  row-gap: 20px;
+  border: 2px solid $color-light-grey;
+  border-radius: 5%;
+  overflow: hidden;
+  .book-description {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    margin: 20px 30px;
+  }
+}
