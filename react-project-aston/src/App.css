@@ -1,38 +1,239 @@
-.App {
+.book-details img {
+  height: 300px;
+  object-fit: contain;
+}
+.book-details .book-description {
+  flex-basis: 60%;
+}
+.book-details .book-description h2 {
+  margin-top: 20px;
+}
+
+.book-summary {
+  flex-basis: 20%;
+  flex-direction: column;
+}
+.book-summary:hover {
+  cursor: pointer;
+  background-color: #f0efeb;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
+}
+.book-summary img {
+  height: 200px;
+  object-fit: contain;
+}
+
+.book-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 30px;
+  row-gap: 20px;
+  flex-wrap: wrap;
+  margin: 40px auto;
+}
+
+.card {
+  display: flex;
+  row-gap: 20px;
+  border: 2px solid #f0efeb;
+  border-radius: 5%;
+  overflow: hidden;
+}
+.card .book-description {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  margin: 20px 30px;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  height: 100px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #007ea7;
+  color: #ffffff;
+}
+
+.flex-2-column {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 30px;
+}
+
+.logo:hover {
+  color: #bbdefb;
+  cursor: pointer;
+}
+
+.logo h1 {
+  margin: 0;
+}
+
+.navigation ul {
+  display: flex;
+  column-gap: 60px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.header {
+  -webkit-box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
+}
+
+.navigation a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 1.2em;
+}
+
+.navigation a:hover {
+  cursor: pointer;
+  color: #bbdefb;
+}
+
+.wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.footer {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  background-color: #007ea7;
+  color: #ffffff;
+}
+
+.details {
+  margin-top: 50px;
+}
+
+.homepage {
+  position: absolute;
+  top: 100px;
+  right: 0;
+  width: 100%;
+  height: 300px;
+  background-image: url("./assets/thought-catalog-mmWqrsjZ4Lw-unsplash.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 20px;
+}
+.homepage .homepage__title {
+  color: #ffffff;
+}
+.homepage .homepage__form {
+  display: flex;
+  column-gap: 15px;
+}
+.homepage .homepage__form .button {
+  background-color: #003459;
+  color: #ffffff;
+  padding: 15px 20px;
+  border-radius: 10%;
+  cursor: pointer;
+  border: none;
+  font-size: 1.2em;
+  line-height: 1;
+}
+.homepage .homepage__form .button:hover {
+  color: #d9d9d9;
+  opacity: 0.8;
+  -webkit-box-shadow: 7px 7px 11px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 7px 7px 11px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 7px 7px 11px 0px rgba(34, 60, 80, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100vh;
+  margin: 0;
+  font-size: 10px;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  min-height: calc(100vh - 150px - 50px);
+  margin-top: 150px;
+  display: flex;
+  justify-content: center;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+button {
+  border: none;
 }
 
-.App-link {
-  color: #61dafb;
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  margin: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+img {
+  border-style: none;
 }
+
+a {
+  background-color: transparent;
+  text-decoration: none;
+  color: inherit;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+/*# sourceMappingURL=App.css.map */
