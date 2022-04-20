@@ -1,41 +1,33 @@
-import { useState, useRef, useContext } from 'react';
+import { useContext } from 'react';
 import AuthContext from '../store/auth-context';
 import { useNavigate } from 'react-router';
+import useValidation from '../hooks/use-validation';
 
 const AuthForm = (props) => {
   const authCtx = useContext(AuthContext);
-  const emailInputRef = useRef();
-  const passwordInputRef = useRef();
-  const [isEmailInvalid, setIsEmailInvalid] = useState(false);
-  const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
   const navigate = useNavigate();
 
-  //Validation
-  const validateInputEmail = (input) => {
-    return input.trim().length >= 3 && input.includes('@');
-  };
-  const validateInputPassword = (input) => {
-    return input.trim().length >= 5;
-  };
+  const {
+    inputRef: emailInputRef,
+    isInvalid: isEmailInvalid,
+    submitValueHandler: submitEmailHandler,
+  } = useValidation('email');
+
+  const {
+    inputRef: passwordInputRef,
+    isInvalid: isPasswordInvalid,
+    submitValueHandler: submitPasswordHandler,
+  } = useValidation('password');
 
   const submitHandler = (event) => {
     event.preventDefault();
 
-    let isEmailValid = false;
-    let isPasswordValid = false;
-    let isFormValid = false;
-    let isFormTouched = true;
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
+    const isEmailValid = submitEmailHandler(enteredEmail);
+    const isPasswordValid = submitPasswordHandler(enteredPassword);
 
-    isEmailValid = validateInputEmail(enteredEmail);
-    isPasswordValid = validateInputPassword(enteredPassword);
-
-    let emailInvalid = !isEmailValid && isFormTouched;
-
-    setIsEmailInvalid(emailInvalid);
-    setIsPasswordInvalid(!isPasswordValid && isFormTouched);
-    isFormValid = isEmailValid && isPasswordValid;
+    let isFormValid = isEmailValid && isPasswordValid;
 
     if (isFormValid) {
       authCtx.login(enteredEmail);

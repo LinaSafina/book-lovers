@@ -3,11 +3,12 @@ import { Fragment, useContext } from 'react';
 import AuthContext from '../../store/auth-context';
 import Wrapper from './Wrapper';
 
+let activeLinkStyle = {
+  textDecoration: 'underline',
+};
+
 const Header = () => {
   const authCtx = useContext(AuthContext);
-  let activeLinkStyle = {
-    textDecoration: 'underline',
-  };
 
   const logoutHandler = () => {
     authCtx.logout();
