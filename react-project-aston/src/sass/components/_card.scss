@@ -1,13 +1,21 @@
 .card {
-  display: flex;
-  row-gap: 20px;
   border: 2px solid $color-light-grey;
-  border-radius: 5%;
   overflow: hidden;
+  .book-image {
+    background-color: $color-light-grey;
+  }
   .book-description {
     display: flex;
     flex-direction: column;
     row-gap: 10px;
-    margin: 20px 30px;
+    .book-title {
+      color: $color-dark-blue;
+    }
+    .italic {
+      font-style: italic;
+    }
+  }
+  img {
+    object-fit: contain;
   }
 }

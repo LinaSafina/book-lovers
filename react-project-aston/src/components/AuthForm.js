@@ -39,14 +39,21 @@ const AuthForm = (props) => {
     <section className='auth'>
       <h1>{props.header}</h1>
       <form onSubmit={submitHandler} noValidate>
-        <div className='auth__control'>
+        <div className='form__control'>
           <label htmlFor='email'>Your Email</label>
-          <input type='email' id='email' required ref={emailInputRef} />
+          <input
+            className='transparent'
+            type='email'
+            id='email'
+            required
+            ref={emailInputRef}
+          />
           {isEmailInvalid && <span>Email is invalid</span>}
         </div>
-        <div className='auth__control'>
+        <div className='form__control'>
           <label htmlFor='password'>Your Password</label>
           <input
+            className='transparent'
             type='password'
             id='password'
             required
@@ -54,8 +61,8 @@ const AuthForm = (props) => {
           />
           {isPasswordInvalid && <span>Password is invalid</span>}
         </div>
-        <div className='auth__action'>
-          <button>{props.header}</button>
+        <div className='form__action'>
+          <button type='submit'>{props.header}</button>
         </div>
       </form>
     </section>

@@ -1,14 +1,22 @@
-const BookDetails = () => {
+const BookDetails = (props) => {
   return (
     <div className='book-details card'>
-      <img
-        src='https://motaen.com/upload/wallpapers/source/2014/04/24/11/05/40045/o3PbXiAHZT.jpg'
-        alt='book cover'
-      />
+      <img src={props.book.cover} alt='book cover' />
       <div className='book-description'>
-        <h2>Name</h2>
-        <h3>Author</h3>
-        <p>Description</p>
+        <h2 className='book-title'>{props.book.title}</h2>
+        <p>
+          <span className='italic bold'>Author:</span> {props.book.authors}
+        </p>
+        <p>
+          <span className='italic bold'>Language:</span> {props.book.languages}
+        </p>
+        <p>
+          <span className='italic bold'>Subjects:</span> {props.book.subjects}
+        </p>
+        <p>
+          <span className='italic bold'>Download count:</span>{' '}
+          {props.book['download_count']}
+        </p>
       </div>
     </div>
   );

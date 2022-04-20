@@ -1,16 +1,28 @@
-import BookCard from './BookCard';
+import { useNavigate } from 'react-router-dom';
+import BookSummary from './BookSummary';
+import editFetchData from '../helpers/edit-fetch-data';
 
-const BookList = () => {
-  return (
-    <div className='book-list'>
-      <BookCard />
-      <BookCard />
-      <BookCard />
-      <BookCard />
-      <BookCard />
-      <BookCard />
-    </div>
-  );
+const BookList = (props) => {
+  const navigate = useNavigate();
+
+  const clickCardHandler = (bookId) => {
+    navigate(`/details/${bookId}`);
+  };
+
+  const bookList = props.books.map((book) => {
+    const changedData = editFetchData(book);
+    console.log(changedData);
+
+    return (
+      <BookSummary
+        key={book.id}
+        book={changedData}
+        clickCardHandler={clickCardHandler.bind(null, book.id)}
+      />
+    );
+  });
+
+  return <ul className='book-list'>{bookList}</ul>;
 };
 
 export default BookList;
