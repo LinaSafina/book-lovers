@@ -1,7 +1,19 @@
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import { Fragment, useContext } from 'react';
+import AuthContext from '../../store/auth-context';
 import Wrapper from './Wrapper';
 
+let activeLinkStyle = {
+  textDecoration: 'underline',
+};
+
 const Header = () => {
+  const authCtx = useContext(AuthContext);
+
+  const logoutHandler = () => {
+    authCtx.logout();
+  };
+
   return (
     <header className='header'>
       <Wrapper>
@@ -14,12 +26,65 @@ const Header = () => {
           </div>
           <nav className='navigation'>
             <ul>
-              <li>
-                <Link to='/signin'>Sign in</Link>
-              </li>
-              <li>
-                <Link to='/signup'>Sign up</Link>
-              </li>
+              {!authCtx.isLoggedIn && (
+                <Fragment>
+                  <li>
+                    <NavLink
+                      to='/signin'
+                      style={({ isActive }) =>
+                        isActive ? activeLinkStyle : undefined
+                      }
+                    >
+                      Sign in
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to='/signup'
+                      style={({ isActive }) =>
+                        isActive ? activeLinkStyle : undefined
+                      }
+                    >
+                      Sign up
+                    </NavLink>
+                  </li>
+                </Fragment>
+              )}
+              {authCtx.isLoggedIn && (
+                <Fragment>
+                  <li>
+                    <NavLink
+                      to='/favourites'
+                      style={({ isActive }) =>
+                        isActive ? activeLinkStyle : undefined
+                      }
+                    >
+                      Favourites
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to='/history'
+                      style={({ isActive }) =>
+                        isActive ? activeLinkStyle : undefined
+                      }
+                    >
+                      History
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to='/signin'
+                      style={({ isActive }) =>
+                        isActive ? activeLinkStyle : undefined
+                      }
+                      onClick={logoutHandler}
+                    >
+                      Log out
+                    </NavLink>
+                  </li>
+                </Fragment>
+              )}
             </ul>
           </nav>
         </div>
