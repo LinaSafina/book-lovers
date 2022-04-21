@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Wrapper from '../components/Layout/Wrapper';
 
 const HomePage = () => {
@@ -10,9 +10,8 @@ const HomePage = () => {
     event.preventDefault();
 
     const enteredSearchValue = searchInputRef.current.value;
-    const bookTitle = enteredSearchValue.split(' ').join('+');
 
-    navigate(`/search?title=${bookTitle}&page=${1}`);
+    navigate(`/search?search=${enteredSearchValue}&page=${1}`);
   };
 
   return (

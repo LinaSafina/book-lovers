@@ -11,7 +11,6 @@ const BookList = (props) => {
 
   const bookList = props.books.map((book) => {
     const changedData = editFetchData(book);
-    console.log(changedData);
 
     return (
       <BookSummary

@@ -3,13 +3,18 @@ import { useSearchParams } from 'react-router-dom';
 import BookList from '../components/BookList';
 import Loading from '../components/Layout/Loading';
 import Wrapper from '../components/Layout/Wrapper';
+import SearchForm from '../components/SearchForm';
 
 const Search = () => {
   // fetch
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+
+  const filteredParams = [...searchParams]
+    .filter((param) => param[1] !== '')
+    .reduce((prev, curr) => prev + `${curr[0]}=${curr[1]}&`, '');
 
   const fetchBooksHandler = useCallback(async () => {
     setIsLoading(true);
@@ -17,9 +22,7 @@ const Search = () => {
 
     try {
       const response = await fetch(
-        `https://gutendex.com/books?search=${searchParams.get(
-          'title'
-        )}&page=${1}`
+        `https://gutendex.com/books?${filteredParams}`
       );
 
       if (!response.ok) {
@@ -28,21 +31,20 @@ const Search = () => {
 
       const { count, results: loadedBooks } = await response.json();
       setBooks(loadedBooks);
-      console.log(loadedBooks);
     } catch (e) {
       setError(e.message);
     }
 
     setIsLoading(false);
-  }, [searchParams]);
+  }, [filteredParams]);
 
   useEffect(() => {
     fetchBooksHandler();
-  }, [fetchBooksHandler]);
+  }, [fetchBooksHandler, searchParams]);
   // fetch
 
   let content = (
-    <p>
+    <p className='info'>
       Sorry, we couldn't find any books. Change the search parameters and try
       again.
     </p>
@@ -57,17 +59,15 @@ const Search = () => {
   }
 
   if (error) {
-    content = <p>{error}</p>;
+    content = <p className='info'>{error}</p>;
   }
 
   return (
     <Wrapper>
-      <input />
-      <input />
-      <input />
-      <input />
-      <input />
-      <Fragment>{content}</Fragment>
+      <div className='search-page'>
+        <SearchForm defaultValue={searchParams.get('search')} />
+        <Fragment>{content}</Fragment>
+      </div>
     </Wrapper>
   );
 };

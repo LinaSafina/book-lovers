@@ -1,15 +1,26 @@
 .book-details {
-  max-width: 40vw;
+  max-width: 50vw;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  img {
-    min-height: 250px;
+  justify-content: space-around;
+  padding-bottom: 30px;
+  .book-cover {
+    @include flex-center;
+    img {
+      min-height: 250px;
+    }
   }
   .book-description {
     width: 60%;
     flex-basis: 60%;
     text-align: left;
     padding: 20px;
+  }
+  input[type='checkbox'] + label {
+    right: calc(50% - 10px);
+    bottom: 6px;
+  }
+  .icon {
+    width: 0px;
   }
 }

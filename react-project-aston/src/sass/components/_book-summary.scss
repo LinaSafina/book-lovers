@@ -16,4 +16,8 @@
   .book-description {
     margin: 0 10px;
   }
+  input[type='checkbox'] + label {
+    right: 6px;
+    bottom: 6px;
+  }
 }

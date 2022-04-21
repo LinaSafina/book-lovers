@@ -19,7 +19,8 @@
     margin-bottom: 1rem;
     font-size: 2rem;
   }
-  input {
+  input,
+  select {
     font: inherit;
     color: $color-bright-blue;
     border-radius: 4px;

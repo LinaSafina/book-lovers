@@ -31,7 +31,7 @@ const AuthForm = (props) => {
 
     if (isFormValid) {
       authCtx.login(enteredEmail);
-      navigate('/');
+      navigate(-1);
     }
   };
 
