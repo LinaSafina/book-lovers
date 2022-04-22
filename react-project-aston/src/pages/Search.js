@@ -8,12 +8,30 @@ import SearchForm from '../components/SearchForm';
 const Search = () => {
   // fetch
   const [books, setBooks] = useState([]);
+  const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchParams] = useSearchParams();
+  // const paramsFilter =(param[1] !== 'all' || param[1] !== '') &&
+  //       (param[0] === 'search' ||
+  //         param[0] === 'language' ||
+  //         param[0] === 'copyright' ||
+  //         param[0] === 'page')
+
+  const validateSearchParam = (param) => {
+    console.log(searchParams.get('copyright') !== 'all');
+    return (
+      (param === 'search' ||
+        param === 'language' ||
+        param === 'copyright' ||
+        param === 'page') &&
+      searchParams.get(param) !== 'all' &&
+      searchParams.get(param) !== ''
+    );
+  };
 
   const filteredParams = [...searchParams]
-    .filter((param) => param[1] !== '')
+    .filter((param) => validateSearchParam(param[0]))
     .reduce((prev, curr) => prev + `${curr[0]}=${curr[1]}&`, '');
 
   const fetchBooksHandler = useCallback(async () => {
@@ -30,7 +48,9 @@ const Search = () => {
       }
 
       const { count, results: loadedBooks } = await response.json();
+
       setBooks(loadedBooks);
+      setCount(count);
     } catch (e) {
       setError(e.message);
     }
@@ -51,7 +71,7 @@ const Search = () => {
   );
 
   if (books.length > 0) {
-    content = <BookList books={books} />;
+    content = <BookList books={books} count={count} />;
   }
 
   if (isLoading) {
@@ -65,7 +85,14 @@ const Search = () => {
   return (
     <Wrapper>
       <div className='search-page'>
-        <SearchForm defaultValue={searchParams.get('search')} />
+        
+        <SearchForm
+          defaultValues={{
+            search: searchParams.get('search'),
+            language: searchParams.get('language'),
+            copyright: searchParams.get('copyright'),
+          }}
+        />
         <Fragment>{content}</Fragment>
       </div>
     </Wrapper>

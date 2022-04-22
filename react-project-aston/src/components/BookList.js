@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import BookSummary from './BookSummary';
 import editFetchData from '../helpers/edit-fetch-data';
+import { Fragment } from 'react';
 
 const BookList = (props) => {
   const navigate = useNavigate();
@@ -21,7 +22,14 @@ const BookList = (props) => {
     );
   });
 
-  return <ul className='book-list'>{bookList}</ul>;
+  return (
+    <Fragment>
+      <p className='search-results'>
+        We have found <span className='bold'>{props.count}</span> books
+      </p>
+      <ul className='book-list'>{bookList}</ul>
+    </Fragment>
+  );
 };
 
 export default BookList;

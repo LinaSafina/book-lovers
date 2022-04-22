@@ -13,9 +13,9 @@ const SearchForm = (props) => {
     navigate({
       pathname: '',
       search: createSearchParams({
-        search: searchInputRef.current.value,
-        copyright: copyrightInputRef.current.value,
-        languages: langInputRef.current.value,
+        search: searchInputRef.current.value || 'all',
+        copyright: copyrightInputRef.current.value || 'all',
+        languages: langInputRef.current.value || 'all',
         page: 1,
       }).toString(),
     });
@@ -24,10 +24,10 @@ const SearchForm = (props) => {
   return (
     <form className='form search-form' onSubmit={submitFormHandler}>
       <div className='form__control'>
-        <input ref={searchInputRef} defaultValue={props.defaultValue} />
+        <input ref={searchInputRef} defaultValue={props.defaultValues.search} />
       </div>
       <div className='form__control'>
-        <select ref={langInputRef}>
+        <select ref={langInputRef} defaultValue={props.defaultValues.language}>
           <option disabled>Language</option>
           <option value=''>All</option>
           <option value='en'>English</option>
@@ -35,7 +35,10 @@ const SearchForm = (props) => {
         </select>
       </div>
       <div className='form__control'>
-        <select ref={copyrightInputRef}>
+        <select
+          ref={copyrightInputRef}
+          defaultValue={props.defaultValues.copyright}
+        >
           <option disabled>Copyright</option>
           <option value=''>all</option>
           <option value='true'>yes</option>
