@@ -1,0 +1,23 @@
+.search-form {
+  @include flex-center();
+  column-gap: 10px;
+  margin: 0 auto;
+  padding: 5px;
+  background-color: $color-light-grey;
+  select,
+  input,
+  button {
+    height: 40px;
+  }
+  .form__control,
+  .form__action {
+    margin: 0;
+  }
+  select {
+    min-width: 150px;
+    cursor: pointer;
+  }
+  input {
+    min-width: 200px;
+  }
+}

@@ -1,7 +1,13 @@
 .book-list {
-  @include flex-center();
+  display: flex;
+  justify-content: space-between;
   column-gap: 30px;
   row-gap: 20px;
   flex-wrap: wrap;
-  margin: 40px auto;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+.search-results {
+  margin: 20px auto;
 }

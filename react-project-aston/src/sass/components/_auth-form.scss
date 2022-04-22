@@ -11,7 +11,7 @@
     color: $color-dark-blue;
   }
 }
-.auth__control {
+.form__control {
   label {
     display: block;
     color: $color-bright-blue;
@@ -19,19 +19,22 @@
     margin-bottom: 1rem;
     font-size: 2rem;
   }
-  input {
+  input,
+  select {
     font: inherit;
-    background-color: transparent;
     color: $color-bright-blue;
     border-radius: 4px;
     border: 1px solid $color-light-blue;
     width: 100%;
     text-align: left;
-    padding: 0.25rem;
+    padding: 0.5rem;
     outline: none;
     &:focus,
     &:active {
       border: 1px solid $color-bright-blue;
+    }
+    .transparent {
+      background-color: transparent;
     }
   }
   span {
@@ -39,8 +42,8 @@
   }
 }
 
-.auth__control,
-.auth__actions {
+.form__control,
+.form__action {
   margin-top: 0.5rem;
   margin-bottom: 2rem;
   display: flex;
@@ -48,7 +51,7 @@
   align-items: center;
 }
 
-.auth__action {
+.form__action {
   margin-bottom: 3rem;
   button {
     cursor: pointer;

@@ -6,9 +6,11 @@
 @import './components/book-list';
 @import './components/card';
 @import './components/auth-form';
+@import './components/search-form';
 @import './layout/header';
 @import './layout/wrapper';
 @import './layout/footer';
+@import './layout/loading';
 @import './pages/details';
 @import './pages/favourites';
 @import './pages/history';
@@ -41,7 +43,7 @@ body {
 
 .main {
   min-height: calc(100vh - 150px - 50px);
-  margin-top: 150px;
+  margin: 150px auto 50px;
   display: flex;
   justify-content: center;
   text-align: center;
@@ -90,4 +92,12 @@ a {
 h1 {
   font-size: 2em;
   margin: 0.67em 0;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.bold {
+  font-weight: bold;
 }

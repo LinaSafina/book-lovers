@@ -16,6 +16,17 @@
   .homepage__form {
     display: flex;
     column-gap: 15px;
+    align-items: center;
+    font-size: 1.2em;
+    .form__control,
+    .form__action {
+      margin: 0;
+    }
+    // .form__control {
+    //   input {
+    //     color: $color-dark-blue;
+    //   }
+    // }
     .button {
       background-color: $color-dark-blue;
       color: $color-white;
@@ -23,7 +34,6 @@
       border-radius: 10%;
       cursor: pointer;
       border: none;
-      font-size: 1.2em;
       line-height: 1;
       &:hover {
         color: #d9d9d9;
