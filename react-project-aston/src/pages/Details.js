@@ -1,11 +1,11 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BookDetails from '../components/BookDetails';
-import editFetchData from '../helpers/edit-fetch-data';
+import Loading from '../components/Layout/Loading';
 
 const Details = () => {
   // fetch
-  const [book, setBook] = useState([]);
+  const [book, setBook] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const params = useParams();
@@ -24,9 +24,7 @@ const Details = () => {
       }
 
       const loadedBook = await response.json();
-      const changedData = editFetchData(loadedBook);
-
-      setBook(changedData);
+      setBook(loadedBook);
     } catch (e) {
       setError(e.message);
     }
@@ -39,11 +37,23 @@ const Details = () => {
   }, [fetchBooksHandler]);
   // fetch
 
-  return (
-    <div className='details'>
-      <BookDetails book={book} />
-    </div>
+  let content = (
+    <p className='info'>We couldn't find this book's description</p>
   );
+
+  if (book) {
+    content = <BookDetails book={book} />;
+  }
+
+  if (isLoading) {
+    content = <Loading />;
+  }
+
+  if (error) {
+    content = <p className='info'>{error}</p>;
+  }
+
+  return <div className='details'>{content}</div>;
 };
 
 export default Details;

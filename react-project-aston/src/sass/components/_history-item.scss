@@ -1,0 +1,10 @@
+.history-item {
+  @include flex-center;
+  width: 100%;
+  justify-content: space-between;
+  flex-basis: 25%;
+  border: 2px solid $color-light-grey;
+  font-size: 1.6rem;
+  padding: 1em;
+  cursor: pointer;
+}

@@ -62,7 +62,9 @@ const AuthForm = (props) => {
           {isPasswordInvalid && <span>Password is invalid</span>}
         </div>
         <div className='form__action'>
-          <button type='submit'>{props.header}</button>
+          <button className='button' type='submit'>
+            {props.header}
+          </button>
         </div>
       </form>
     </section>

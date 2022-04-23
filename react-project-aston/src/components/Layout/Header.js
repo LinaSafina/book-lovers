@@ -1,14 +1,30 @@
 import { NavLink, Link } from 'react-router-dom';
-import { Fragment, useContext } from 'react';
+import { Fragment, useContext, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import AuthContext from '../../store/auth-context';
 import Wrapper from './Wrapper';
 
-let activeLinkStyle = {
+const activeLinkStyle = {
   textDecoration: 'underline',
 };
 
 const Header = () => {
   const authCtx = useContext(AuthContext);
+  const amountOfFavourites = useSelector(
+    (state) => state.favourites.amountOfFavourites
+  );
+  const [isBtnAnimated, setIsBtnAnimated] = useState(false);
+
+  useEffect(() => {
+    setIsBtnAnimated(true);
+    setTimeout(() => {
+      setIsBtnAnimated(false);
+    }, 500);
+  }, [amountOfFavourites]);
+
+  const favouritesBadgeClasses = `favourites-badge ${
+    isBtnAnimated ? 'animated' : ''
+  }`;
 
   const logoutHandler = () => {
     authCtx.logout();
@@ -60,6 +76,9 @@ const Header = () => {
                       }
                     >
                       Favourites
+                      <span className={favouritesBadgeClasses}>
+                        {amountOfFavourites}
+                      </span>
                     </NavLink>
                   </li>
                   <li>

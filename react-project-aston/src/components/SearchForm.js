@@ -47,7 +47,9 @@ const SearchForm = (props) => {
         </select>
       </div>
       <div className='form__action'>
-        <button type='submit'>Search</button>
+        <button className='button' type='submit'>
+          Search
+        </button>
       </div>
     </form>
   );
