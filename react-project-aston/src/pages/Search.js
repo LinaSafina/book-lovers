@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, Fragment } from 'react';
+import { useEffect, useState, useRef, useCallback, Fragment } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -16,31 +16,26 @@ const Search = () => {
   const [error, setError] = useState(null);
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
-  let isFirstLoading = true;
+  const firstUpdate = useRef(true);
 
   const fetchBooksHandler = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
-    const validateSearchParam = (param) => {
-      console.log('validate');
+    const queryParam = (param) => {
       return (
-        (param === 'search' ||
-          param === 'languages' ||
-          param === 'copyright' ||
-          param === 'page') &&
-        searchParams.get(param) !== 'all' &&
-        searchParams.get(param) !== ''
+        (searchParams.get(param) &&
+          searchParams.get(param) !== 'all' &&
+          `${param}=${searchParams.get(param)}&`) ||
+        ''
       );
     };
 
-    const filteredParams = [...searchParams].filter((param) =>
-      validateSearchParam(param[0])
-    );
-    const query = filteredParams.reduce(
-      (prev, curr) => prev + `${curr[0]}=${curr[1]}&`,
-      ''
-    );
+    const query =
+      queryParam('search') +
+      queryParam('languages') +
+      queryParam('copyright') +
+      queryParam('page');
 
     try {
       const response = await fetch(`https://gutendex.com/books?${query}`);
@@ -57,17 +52,18 @@ const Search = () => {
       setError(e.message);
     }
 
-    dispatch(historyActions.add(Object.fromEntries(filteredParams)));
+    dispatch(historyActions.add(Object.fromEntries([...searchParams])));
 
     setIsLoading(false);
   }, [dispatch, searchParams]);
 
   useEffect(() => {
-    if (isFirstLoading) {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+    } else {
       fetchBooksHandler();
-      isFirstLoading = false;
     }
-  }, [fetchBooksHandler, isFirstLoading]);
+  }, [fetchBooksHandler]);
   // fetch
 
   let content = (
@@ -95,7 +91,7 @@ const Search = () => {
         <SearchForm
           defaultValues={{
             search: searchParams.get('search'),
-            language: searchParams.get('language'),
+            languages: searchParams.get('languages'),
             copyright: searchParams.get('copyright'),
           }}
         />

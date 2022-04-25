@@ -13,7 +13,7 @@ const History = () => {
       navigate(
         `/search?search=${item.search || 'all'}&copyright=${
           item.copyright || 'all'
-        }&language=${item.language || 'all'}&page=1`
+        }&languages=${item.languages || 'all'}&page=1`
       );
     };
     return (

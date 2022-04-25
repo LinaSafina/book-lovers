@@ -27,7 +27,7 @@ const SearchForm = (props) => {
         <input ref={searchInputRef} defaultValue={props.defaultValues.search} />
       </div>
       <div className='form__control'>
-        <select ref={langInputRef} defaultValue={props.defaultValues.language}>
+        <select ref={langInputRef} defaultValue={props.defaultValues.languages}>
           <option disabled>Language</option>
           <option value=''>All</option>
           <option value='en'>English</option>
