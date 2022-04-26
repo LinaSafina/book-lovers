@@ -1,70 +1,42 @@
-import { useEffect, useState, useRef, useCallback, Fragment } from 'react';
+import { useEffect, Fragment } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
+import useFetch from '../hooks/use-fetch';
 import { historyActions } from '../store/history-slice';
 import BookList from '../components/BookList';
 import Loading from '../components/Layout/Loading';
 import Wrapper from '../components/Layout/Wrapper';
 import SearchForm from '../components/SearchForm';
+import searchAll from '../constants/search-all';
 
 const Search = () => {
-  // fetch
-  const [books, setBooks] = useState([]);
-  const [count, setCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const firstUpdate = useRef(true);
 
-  const fetchBooksHandler = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
+  const queryParam = (param) => {
+    const queryParam = searchParams.get(param);
+    return (
+      (queryParam && queryParam !== searchAll && `${param}=${queryParam}&`) || ''
+    );
+  };
 
-    const queryParam = (param) => {
-      return (
-        (searchParams.get(param) &&
-          searchParams.get(param) !== 'all' &&
-          `${param}=${searchParams.get(param)}&`) ||
-        ''
-      );
-    };
+  const query =
+    '?' +
+    queryParam('search') +
+    queryParam('languages') +
+    queryParam('copyright') +
+    queryParam('page');
 
-    const query =
-      queryParam('search') +
-      queryParam('languages') +
-      queryParam('copyright') +
-      queryParam('page');
-
-    try {
-      const response = await fetch(`https://gutendex.com/books?${query}`);
-
-      if (!response.ok) {
-        throw new Error('Something went wrong!');
-      }
-
-      const { count, results: loadedBooks } = await response.json();
-
-      setBooks(loadedBooks);
-      setCount(count);
-    } catch (e) {
-      setError(e.message);
-    }
-
-    dispatch(historyActions.add(Object.fromEntries([...searchParams])));
-
-    setIsLoading(false);
-  }, [dispatch, searchParams]);
+  const { fetchBooksHandler, data, isLoading, error } = useFetch(query);
+  const books = data?.results;
+  const count = data?.count;
 
   useEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-    } else {
-      fetchBooksHandler();
-    }
-  }, [fetchBooksHandler]);
-  // fetch
+    const fetchData = async () => await fetchBooksHandler();
+    fetchData();
+    dispatch(historyActions.add(Object.fromEntries([...searchParams])));
+  }, [fetchBooksHandler, searchParams, dispatch]);
 
   let content = (
     <p className='info'>
@@ -73,7 +45,7 @@ const Search = () => {
     </p>
   );
 
-  if (books.length > 0) {
+  if (books?.length > 0) {
     content = <BookList books={books} />;
   }
 

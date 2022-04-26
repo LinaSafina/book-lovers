@@ -2,7 +2,7 @@ import editFetchData from '../helpers/edit-fetch-data';
 import HeartIcon from './HeartIcon';
 
 const BookDetails = (props) => {
-  const book = props.book;
+  const { book } = props;
   const changedData = editFetchData(book);
 
   return (
@@ -23,9 +23,9 @@ const BookDetails = (props) => {
         </p>
         <p>
           <span className='italic bold'>Download count:</span>{' '}
-          {changedData['download_count']}
+          {changedData.downloadCount}
         </p>
-        <HeartIcon book={book} />
+        <HeartIcon id={book.id} />
       </div>
     </div>
   );

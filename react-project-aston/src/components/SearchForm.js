@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 
+import searchAll from '../constants/search-all';
+
 const SearchForm = (props) => {
   const searchInputRef = useRef();
   const langInputRef = useRef();
@@ -13,9 +15,9 @@ const SearchForm = (props) => {
     navigate({
       pathname: '',
       search: createSearchParams({
-        search: searchInputRef.current.value || 'all',
-        copyright: copyrightInputRef.current.value || 'all',
-        languages: langInputRef.current.value || 'all',
+        search: searchInputRef.current.value || searchAll,
+        copyright: copyrightInputRef.current.value || searchAll,
+        languages: langInputRef.current.value || searchAll,
         page: 1,
       }).toString(),
     });

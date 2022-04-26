@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
 import HistoryItem from '../components/HistoryItem';
 import Wrapper from '../components/Layout/Wrapper';
 import { historyActions } from '../store/history-slice';
@@ -16,10 +17,11 @@ const History = () => {
         }&languages=${item.languages || 'all'}&page=1`
       );
     };
+
     return (
       <HistoryItem
-        data={item}
         key={Math.random().toString()}
+        data={item}
         onClick={clickItemHandler}
       />
     );

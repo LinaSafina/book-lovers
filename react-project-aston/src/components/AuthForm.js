@@ -1,6 +1,7 @@
 import { useContext } from 'react';
-import AuthContext from '../store/auth-context';
 import { useNavigate } from 'react-router';
+
+import AuthContext from '../store/auth-context';
 import useValidation from '../hooks/use-validation';
 
 const AuthForm = (props) => {

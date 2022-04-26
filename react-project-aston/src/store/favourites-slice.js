@@ -2,29 +2,39 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialFavouritesState = {
   amountOfFavourites: 0,
-  favourites: [],
+  favourites: {},
 };
 
 const favouritesSlice = createSlice({
   name: 'favourites',
   initialState: initialFavouritesState,
   reducers: {
-    addFavourite(state, action) {
-      const newItem = action.payload;
-      console.log('adding');
-      state.favourites.push(newItem);
-      state.amountOfFavourites++;
-    },
-    removeFavourite(state, action) {
+    toggleFavourites(state, action) {
       const id = action.payload;
-      console.log('removing');
-      state.favourites = state.favourites.filter((item) => {
-        return item.id !== id;
-      });
-      state.amountOfFavourites--;
+      console.log(action.payload)
+      const isFavourite = state.favourites[id];
+      if (isFavourite) {
+        delete state.favourites[id];
+        state.amountOfFavourites--;
+      } else {
+        state.favourites[id] = true;
+        state.amountOfFavourites++;
+      }
     },
+    // addFavourite(state, action) {
+    //   const newItem = action.payload;
+    //   state.favourites.push(newItem);
+    //   state.amountOfFavourites++;
+    // },
+    // removeFavourite(state, action) {
+    //   const id = action.payload;
+    //   state.favourites = state.favourites.filter((item) => {
+    //     return item.id !== id;
+    //   });
+    //   state.amountOfFavourites--;
+    // },
     deleteAll(state) {
-      state.favourites = [];
+      state.favourites = {};
       state.amountOfFavourites = 0;
     },
   },

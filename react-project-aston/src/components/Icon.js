@@ -1,4 +1,5 @@
 const Icon = (props) => {
+  // div сделать кликабельным
   return (
     <div className='icon' onClick={props.onIconClick}>
       <svg

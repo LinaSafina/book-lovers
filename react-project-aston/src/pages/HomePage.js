@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import Wrapper from '../components/Layout/Wrapper';
 
 const HomePage = () => {
