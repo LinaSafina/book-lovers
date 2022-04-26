@@ -9,6 +9,7 @@ import Loading from '../components/Layout/Loading';
 import Wrapper from '../components/Layout/Wrapper';
 import SearchForm from '../components/SearchForm';
 import searchAll from '../constants/search-all';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -17,7 +18,8 @@ const Search = () => {
   const queryParam = (param) => {
     const queryParam = searchParams.get(param);
     return (
-      (queryParam && queryParam !== searchAll && `${param}=${queryParam}&`) || ''
+      (queryParam && queryParam !== searchAll && `${param}=${queryParam}&`) ||
+      ''
     );
   };
 
@@ -67,9 +69,11 @@ const Search = () => {
             copyright: searchParams.get('copyright'),
           }}
         />
+
         <p className='search-results'>
           We have found <span className='bold'>{count}</span> books
         </p>
+
         <Fragment>{content}</Fragment>
       </div>
     </Wrapper>
