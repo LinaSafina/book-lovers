@@ -1,49 +1,40 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BookDetails from '../components/BookDetails';
-import editFetchData from '../helpers/edit-fetch-data';
+import Loading from '../components/Layout/Loading';
+import useFetch from '../hooks/use-fetch';
 
 const Details = () => {
-  // fetch
-  const [book, setBook] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const params = useParams();
-
-  const fetchBooksHandler = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(
-        `https://gutendex.com/books/${params.bookId}`
-      );
-
-      if (!response.ok) {
-        throw new Error('Something went wrong!');
-      }
-
-      const loadedBook = await response.json();
-      const changedData = editFetchData(loadedBook);
-
-      setBook(changedData);
-    } catch (e) {
-      setError(e.message);
-    }
-
-    setIsLoading(false);
-  }, [params.bookId]);
+  const {
+    fetchBooksHandler,
+    data: book,
+    isLoading,
+    error,
+  } = useFetch(`/${params.bookId}`);
 
   useEffect(() => {
-    fetchBooksHandler();
+    const fetchData = async () => await fetchBooksHandler();
+    fetchData();
   }, [fetchBooksHandler]);
-  // fetch
 
-  return (
-    <div className='details'>
-      <BookDetails book={book} />
-    </div>
+  let content = (
+    <p className='info'>We couldn't find this book's description</p>
   );
+
+  if (book) {
+    content = <BookDetails book={book} />;
+  }
+
+  if (isLoading) {
+    content = <Loading />;
+  }
+
+  if (error) {
+    content = <p className='info'>{error}</p>;
+  }
+
+  return <div className='details'>{content}</div>;
 };
 
 export default Details;

@@ -1,67 +1,42 @@
-import { useEffect, useState, useCallback, Fragment } from 'react';
+import { useEffect, Fragment } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import useFetch from '../hooks/use-fetch';
+import { historyActions } from '../store/history-slice';
 import BookList from '../components/BookList';
 import Loading from '../components/Layout/Loading';
 import Wrapper from '../components/Layout/Wrapper';
 import SearchForm from '../components/SearchForm';
+import searchAll from '../constants/search-all';
 
 const Search = () => {
-  // fetch
-  const [books, setBooks] = useState([]);
-  const [count, setCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [searchParams] = useSearchParams();
-  // const paramsFilter =(param[1] !== 'all' || param[1] !== '') &&
-  //       (param[0] === 'search' ||
-  //         param[0] === 'language' ||
-  //         param[0] === 'copyright' ||
-  //         param[0] === 'page')
+  const dispatch = useDispatch();
 
-  const validateSearchParam = (param) => {
-    console.log(searchParams.get('copyright') !== 'all');
+  const queryParam = (param) => {
+    const queryParam = searchParams.get(param);
     return (
-      (param === 'search' ||
-        param === 'language' ||
-        param === 'copyright' ||
-        param === 'page') &&
-      searchParams.get(param) !== 'all' &&
-      searchParams.get(param) !== ''
+      (queryParam && queryParam !== searchAll && `${param}=${queryParam}&`) || ''
     );
   };
 
-  const filteredParams = [...searchParams]
-    .filter((param) => validateSearchParam(param[0]))
-    .reduce((prev, curr) => prev + `${curr[0]}=${curr[1]}&`, '');
+  const query =
+    '?' +
+    queryParam('search') +
+    queryParam('languages') +
+    queryParam('copyright') +
+    queryParam('page');
 
-  const fetchBooksHandler = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(
-        `https://gutendex.com/books?${filteredParams}`
-      );
-
-      if (!response.ok) {
-        throw new Error('Something went wrong!');
-      }
-
-      const { count, results: loadedBooks } = await response.json();
-
-      setBooks(loadedBooks);
-      setCount(count);
-    } catch (e) {
-      setError(e.message);
-    }
-
-    setIsLoading(false);
-  }, [filteredParams]);
+  const { fetchBooksHandler, data, isLoading, error } = useFetch(query);
+  const books = data?.results;
+  const count = data?.count;
 
   useEffect(() => {
-    fetchBooksHandler();
-  }, [fetchBooksHandler, searchParams]);
-  // fetch
+    const fetchData = async () => await fetchBooksHandler();
+    fetchData();
+    dispatch(historyActions.add(Object.fromEntries([...searchParams])));
+  }, [fetchBooksHandler, searchParams, dispatch]);
 
   let content = (
     <p className='info'>
@@ -70,8 +45,8 @@ const Search = () => {
     </p>
   );
 
-  if (books.length > 0) {
-    content = <BookList books={books} count={count} />;
+  if (books?.length > 0) {
+    content = <BookList books={books} />;
   }
 
   if (isLoading) {
@@ -85,14 +60,16 @@ const Search = () => {
   return (
     <Wrapper>
       <div className='search-page'>
-        
         <SearchForm
           defaultValues={{
             search: searchParams.get('search'),
-            language: searchParams.get('language'),
+            languages: searchParams.get('languages'),
             copyright: searchParams.get('copyright'),
           }}
         />
+        <p className='search-results'>
+          We have found <span className='bold'>{count}</span> books
+        </p>
         <Fragment>{content}</Fragment>
       </div>
     </Wrapper>

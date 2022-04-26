@@ -53,17 +53,18 @@
 
 .form__action {
   margin-bottom: 3rem;
-  button {
-    cursor: pointer;
-    font: inherit;
-    color: $color-white;
-    background-color: $color-bright-blue;
-    border: none;
-    border-radius: 4px;
-    padding: 0.5rem 2.5rem;
-    &:hover {
-      background-color: $color-dark-blue;
-      border-color: $color-dark-blue;
-    }
+}
+
+.button {
+  cursor: pointer;
+  font: inherit;
+  color: $color-white;
+  background-color: $color-bright-blue;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 2.5rem;
+  &:hover {
+    background-color: $color-dark-blue;
+    border-color: $color-dark-blue;
   }
 }

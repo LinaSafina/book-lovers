@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 
+import searchAll from '../constants/search-all';
+
 const SearchForm = (props) => {
   const searchInputRef = useRef();
   const langInputRef = useRef();
@@ -13,9 +15,9 @@ const SearchForm = (props) => {
     navigate({
       pathname: '',
       search: createSearchParams({
-        search: searchInputRef.current.value || 'all',
-        copyright: copyrightInputRef.current.value || 'all',
-        languages: langInputRef.current.value || 'all',
+        search: searchInputRef.current.value || searchAll,
+        copyright: copyrightInputRef.current.value || searchAll,
+        languages: langInputRef.current.value || searchAll,
         page: 1,
       }).toString(),
     });
@@ -27,7 +29,7 @@ const SearchForm = (props) => {
         <input ref={searchInputRef} defaultValue={props.defaultValues.search} />
       </div>
       <div className='form__control'>
-        <select ref={langInputRef} defaultValue={props.defaultValues.language}>
+        <select ref={langInputRef} defaultValue={props.defaultValues.languages}>
           <option disabled>Language</option>
           <option value=''>All</option>
           <option value='en'>English</option>
@@ -47,7 +49,9 @@ const SearchForm = (props) => {
         </select>
       </div>
       <div className='form__action'>
-        <button type='submit'>Search</button>
+        <button className='button' type='submit'>
+          Search
+        </button>
       </div>
     </form>
   );

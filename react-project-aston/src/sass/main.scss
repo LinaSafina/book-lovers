@@ -7,6 +7,8 @@
 @import './components/card';
 @import './components/auth-form';
 @import './components/search-form';
+@import './components/heart-icon';
+@import './components/history-item';
 @import './layout/header';
 @import './layout/wrapper';
 @import './layout/footer';
@@ -42,8 +44,8 @@ body {
 }
 
 .main {
-  min-height: calc(100vh - 150px - 50px);
-  margin: 150px auto 50px;
+  min-height: calc(100vh - 200px - 50px);
+  margin: 150px 0 50px;
   display: flex;
   justify-content: center;
   text-align: center;

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
-import AuthContext from '../store/auth-context';
 import { useNavigate } from 'react-router';
+
+import AuthContext from '../store/auth-context';
 import useValidation from '../hooks/use-validation';
 
 const AuthForm = (props) => {
@@ -62,7 +63,9 @@ const AuthForm = (props) => {
           {isPasswordInvalid && <span>Password is invalid</span>}
         </div>
         <div className='form__action'>
-          <button type='submit'>{props.header}</button>
+          <button className='button' type='submit'>
+            {props.header}
+          </button>
         </div>
       </form>
     </section>

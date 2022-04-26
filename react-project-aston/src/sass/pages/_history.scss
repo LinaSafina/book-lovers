@@ -1,0 +1,16 @@
+.history {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 0 auto;
+  .button {
+    align-self: flex-start;
+  }
+  ul {
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    width: 100%;
+  }
+}
