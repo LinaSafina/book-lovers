@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import HistoryItem from '../components/HistoryItem';
 import Wrapper from '../components/Layout/Wrapper';
@@ -7,7 +8,8 @@ import { historyActions } from '../store/history-slice';
 
 const History = () => {
   const navigate = useNavigate();
-  const history = useSelector((state) => state.history.history);
+  const history = useSelector((state) => state.history);
+  const { email: user } = useSelector((state) => state.user);
 
   const historyList = history.map((item) => {
     const clickItemHandler = () => {
@@ -31,6 +33,10 @@ const History = () => {
   const clearHistoryHandler = () => {
     dispatch(historyActions.deleteAll());
   };
+
+  if (!user) {
+    return <Navigate to='/signin' replace />;
+  }
 
   return (
     <Wrapper>

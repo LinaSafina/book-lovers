@@ -1,16 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialHistoryState = { history: [] };
+const initialHistoryState = [];
 
 const historySlice = createSlice({
   name: 'history',
   initialState: initialHistoryState,
   reducers: {
     deleteAll(state) {
-      state.history = [];
+      state = [];
     },
     add(state, action) {
-      state.history.unshift(action.payload);
+      console.log(state, action);
+      state.unshift(action.payload);
+    },
+    replaceAll(state, action) {
+      state = action.payload;
     },
   },
 });
