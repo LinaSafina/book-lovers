@@ -1,5 +1,5 @@
 import { useEffect, Fragment, useState } from 'react';
-import { useSearchParams, useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import useFetch from '../hooks/use-fetch';
@@ -13,8 +13,6 @@ import searchAll from '../constants/searchAll';
 const Search = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const location = useLocation();
-  const previousPage = location?.state?.name;
   const [isFirstLoading, setIsFirstLoading] = useState(true);
 
   const queryParam = (param) => {
@@ -45,10 +43,8 @@ const Search = () => {
       return;
     }
 
-    if (previousPage !== 'history') {
-      dispatch(historyActions.add(Object.fromEntries([...searchParams])));
-    }
-  }, [fetchBooksHandler, searchParams, dispatch, isFirstLoading, previousPage]);
+    dispatch(historyActions.add(Object.fromEntries([...searchParams])));
+  }, [fetchBooksHandler, searchParams, dispatch, isFirstLoading]);
 
   let content = (
     <p className='info'>
