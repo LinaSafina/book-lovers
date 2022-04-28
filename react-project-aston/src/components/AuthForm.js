@@ -1,12 +1,10 @@
-import { useContext } from 'react';
-import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
 
-import AuthContext from '../store/auth-context';
 import useValidation from '../hooks/use-validation';
+import { userActions } from '../store/user-slice';
 
 const AuthForm = (props) => {
-  const authCtx = useContext(AuthContext);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     inputRef: emailInputRef,
@@ -31,8 +29,9 @@ const AuthForm = (props) => {
     let isFormValid = isEmailValid && isPasswordValid;
 
     if (isFormValid) {
-      authCtx.login(enteredEmail);
-      navigate(-1);
+      props.type === 'signin'
+        ? dispatch(userActions.login(enteredEmail))
+        : dispatch(userActions.signup(enteredEmail));
     }
   };
 

@@ -1,4 +1,4 @@
-import editFetchData from '../helpers/edit-fetch-data';
+import editFetchData from '../helpers/editFetchData';
 import HeartIcon from './HeartIcon';
 
 const BookDetails = (props) => {

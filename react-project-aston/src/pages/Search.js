@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from 'react';
+import { useEffect, Fragment, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -8,16 +8,18 @@ import BookList from '../components/BookList';
 import Loading from '../components/Layout/Loading';
 import Wrapper from '../components/Layout/Wrapper';
 import SearchForm from '../components/SearchForm';
-import searchAll from '../constants/search-all';
+import searchAll from '../constants/searchAll';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
+  const [isFirstLoading, setIsFirstLoading] = useState(true);
 
   const queryParam = (param) => {
     const queryParam = searchParams.get(param);
     return (
-      (queryParam && queryParam !== searchAll && `${param}=${queryParam}&`) || ''
+      (queryParam && queryParam !== searchAll && `${param}=${queryParam}&`) ||
+      ''
     );
   };
 
@@ -35,8 +37,14 @@ const Search = () => {
   useEffect(() => {
     const fetchData = async () => await fetchBooksHandler();
     fetchData();
+
+    if (isFirstLoading) {
+      setIsFirstLoading(false);
+      return;
+    }
+
     dispatch(historyActions.add(Object.fromEntries([...searchParams])));
-  }, [fetchBooksHandler, searchParams, dispatch]);
+  }, [fetchBooksHandler, searchParams, dispatch, isFirstLoading]);
 
   let content = (
     <p className='info'>
@@ -67,9 +75,11 @@ const Search = () => {
             copyright: searchParams.get('copyright'),
           }}
         />
+
         <p className='search-results'>
           We have found <span className='bold'>{count}</span> books
         </p>
+
         <Fragment>{content}</Fragment>
       </div>
     </Wrapper>

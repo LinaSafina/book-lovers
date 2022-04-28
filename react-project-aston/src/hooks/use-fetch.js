@@ -21,7 +21,6 @@ const useFetch = (requestParams) => {
       const loadedData = await response.json();
 
       setData(loadedData);
-      console.log(loadedData);
     } catch (e) {
       setError(e.message);
     }

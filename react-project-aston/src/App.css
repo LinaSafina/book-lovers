@@ -491,4 +491,9 @@ h1 {
   font-weight: bold;
 }
 
+.disabled {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
 /*# sourceMappingURL=App.css.map */

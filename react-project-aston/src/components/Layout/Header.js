@@ -1,8 +1,9 @@
-import { NavLink, Link } from 'react-router-dom';
-import { Fragment, useContext, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { Fragment, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import classNames from 'classnames';
 
-import AuthContext from '../../store/auth-context';
+import { userActions } from '../../store/user-slice';
 import Wrapper from './Wrapper';
 
 const activeLinkStyle = {
@@ -10,10 +11,13 @@ const activeLinkStyle = {
 };
 
 const Header = () => {
-  const authCtx = useContext(AuthContext);
-  const amountOfFavourites = useSelector(
-    (state) => state.favourites.amountOfFavourites
-  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { email: user } = useSelector((state) => {
+    return state.user;
+  });
+  const favourites = useSelector((state) => state.favourites);
+  const amountOfFavourites = Object.keys(favourites).length;
   const [isBtnAnimated, setIsBtnAnimated] = useState(false);
 
   useEffect(() => {
@@ -23,12 +27,13 @@ const Header = () => {
     }, 500);
   }, [amountOfFavourites]);
 
-  const favouritesBadgeClasses = `favourites-badge ${
-    isBtnAnimated ? 'animated' : ''
-  }`;
+  const favouritesBadgeClasses = classNames('favourites-badge', {
+    animated: isBtnAnimated,
+  });
 
   const logoutHandler = () => {
-    authCtx.logout();
+    dispatch(userActions.logout());
+    navigate('/signin');
   };
 
   return (
@@ -43,7 +48,7 @@ const Header = () => {
           </div>
           <nav className='navigation'>
             <ul>
-              {!authCtx.isLoggedIn && (
+              {!user && (
                 <Fragment>
                   <li>
                     <NavLink
@@ -67,7 +72,7 @@ const Header = () => {
                   </li>
                 </Fragment>
               )}
-              {authCtx.isLoggedIn && (
+              {user && (
                 <Fragment>
                   <li>
                     <NavLink
