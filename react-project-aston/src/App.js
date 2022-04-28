@@ -1,6 +1,5 @@
 import { Fragment } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
@@ -16,7 +15,6 @@ import './App.css';
 import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
-  const state = useSelector((state) => state);
   return (
     <Fragment>
       <Header />
