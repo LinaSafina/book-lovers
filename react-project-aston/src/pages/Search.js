@@ -1,14 +1,14 @@
-import { useEffect, Fragment, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import useFetch from '../hooks/use-fetch';
 import { historyActions } from '../store/history-slice';
 import BookList from '../components/BookList';
 import Loading from '../components/Layout/Loading';
 import Wrapper from '../components/Layout/Wrapper';
 import SearchForm from '../components/SearchForm';
 import searchAll from '../constants/searchAll';
+import { useGetBooksQuery } from '../store/api-slice';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -24,27 +24,15 @@ const Search = () => {
   };
 
   const query =
-    '?' +
     queryParam('search') +
     queryParam('languages') +
     queryParam('copyright') +
     queryParam('page');
 
-  const { fetchBooksHandler, data, isLoading, error } = useFetch(query);
-  const books = data?.results;
-  const count = data?.count;
+  const { data, isLoading, isSuccess, isError, error } =
+    useGetBooksQuery(query);
 
-  useEffect(() => {
-    const fetchData = async () => await fetchBooksHandler();
-    fetchData();
-
-    if (isFirstLoading) {
-      setIsFirstLoading(false);
-      return;
-    }
-
-    dispatch(historyActions.add(Object.fromEntries([...searchParams])));
-  }, [fetchBooksHandler, searchParams, dispatch, isFirstLoading]);
+  let count = 0;
 
   let content = (
     <p className='info'>
@@ -53,15 +41,27 @@ const Search = () => {
     </p>
   );
 
-  if (books?.length > 0) {
-    content = <BookList books={books} />;
-  }
-
   if (isLoading) {
+    console.log('loading...')
     content = <Loading />;
   }
 
-  if (error) {
+  if (isSuccess) {
+    if (isFirstLoading) {
+      setIsFirstLoading(false);
+      return;
+    }
+    console.log(data);
+    const { results: books } = data;
+    count = data.count;
+    dispatch(historyActions.add(Object.fromEntries([...searchParams])));
+
+    if (books.length > 0) {
+      content = <BookList books={books} />;
+    }
+  }
+
+  if (isError) {
     content = <p className='info'>{error}</p>;
   }
 
