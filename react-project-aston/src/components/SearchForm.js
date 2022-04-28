@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 
-import searchAll from '../constants/search-all';
+import searchAll from '../constants/searchAll';
 
 const SearchForm = (props) => {
   const searchInputRef = useRef();

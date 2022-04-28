@@ -10,7 +10,7 @@ const HeartIcon = (props) => {
   const favourites = useSelector((state) => state.favourites);
   const {email:user} = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const id = props.id;
+  const {id} = props;
   const isFavourite = favourites[id];
   const heartIconClasses = classNames('heart-icon', { favourite: isFavourite });
 
@@ -20,9 +20,6 @@ const HeartIcon = (props) => {
       navigate('/signin');
     } else {
       dispatch(favouritesActions.toggleFavourites(id));
-      // isFavourite
-      //   ? dispatch(favouritesActions.removeFavourite(id))
-      //   : dispatch(favouritesActions.addFavourite(id));
     }
   };
 

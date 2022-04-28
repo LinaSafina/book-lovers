@@ -7,13 +7,10 @@ const userSlice = createSlice({
   initialState: initialUserState,
   reducers: {
     login(state, action) {
-      console.log(action.payload);
       if (action.payload?.error) {
-        console.log(state.email);
         state = initialUserState;
       } else {
         state.email = action.payload;
-        console.log(state.email);
       }
     },
 

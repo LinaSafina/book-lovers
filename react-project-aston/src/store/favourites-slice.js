@@ -17,14 +17,6 @@ const favouritesSlice = createSlice({
       }
     },
 
-    // addFavourite(state, action) {
-    //   state[action.payload] = true;
-    // },
-
-    // removeFavourite(state, action) {
-    //   delete state[action.payload];
-    // },
-
     deleteAll(state) {
       state = {};
     },

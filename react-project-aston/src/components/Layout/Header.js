@@ -1,6 +1,7 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { Fragment, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import classNames from 'classnames';
 
 import { userActions } from '../../store/user-slice';
 import Wrapper from './Wrapper';
@@ -11,11 +12,10 @@ const activeLinkStyle = {
 
 const Header = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { email: user } = useSelector((state) => {
-    console.log(state);
     return state.user;
   });
-  console.log(user);
   const favourites = useSelector((state) => state.favourites);
   const amountOfFavourites = Object.keys(favourites).length;
   const [isBtnAnimated, setIsBtnAnimated] = useState(false);
@@ -27,12 +27,13 @@ const Header = () => {
     }, 500);
   }, [amountOfFavourites]);
 
-  const favouritesBadgeClasses = `favourites-badge ${
-    isBtnAnimated ? 'animated' : ''
-  }`;
+  const favouritesBadgeClasses = classNames('favourites-badge', {
+    animated: isBtnAnimated,
+  });
 
   const logoutHandler = () => {
     dispatch(userActions.logout());
+    navigate('/signin');
   };
 
   return (

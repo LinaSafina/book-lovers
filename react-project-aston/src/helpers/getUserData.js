@@ -6,7 +6,6 @@ const getUserData = () => {
     currentUser = currentUser ? JSON.parse(currentUser) : undefined;
 
     if (currentUser) {
-      console.log(currentUser);
       return {
         user: { email: currentUser },
         history: JSON.parse(history) || [],

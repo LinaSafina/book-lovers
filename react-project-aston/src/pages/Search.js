@@ -1,5 +1,5 @@
 import { useEffect, Fragment, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import useFetch from '../hooks/use-fetch';
@@ -8,11 +8,13 @@ import BookList from '../components/BookList';
 import Loading from '../components/Layout/Loading';
 import Wrapper from '../components/Layout/Wrapper';
 import SearchForm from '../components/SearchForm';
-import searchAll from '../constants/search-all';
+import searchAll from '../constants/searchAll';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const previousPage = location?.state?.name;
   const [isFirstLoading, setIsFirstLoading] = useState(true);
 
   const queryParam = (param) => {
@@ -37,12 +39,16 @@ const Search = () => {
   useEffect(() => {
     const fetchData = async () => await fetchBooksHandler();
     fetchData();
+
     if (isFirstLoading) {
       setIsFirstLoading(false);
       return;
     }
-    dispatch(historyActions.add(Object.fromEntries([...searchParams])));
-  }, [fetchBooksHandler, searchParams, dispatch, isFirstLoading]);
+
+    if (previousPage !== 'history') {
+      dispatch(historyActions.add(Object.fromEntries([...searchParams])));
+    }
+  }, [fetchBooksHandler, searchParams, dispatch, isFirstLoading, previousPage]);
 
   let content = (
     <p className='info'>

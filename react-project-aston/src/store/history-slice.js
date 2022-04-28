@@ -10,7 +10,6 @@ const historySlice = createSlice({
       state = [];
     },
     add(state, action) {
-      console.log(state, action);
       state.unshift(action.payload);
     },
     replaceAll(state, action) {

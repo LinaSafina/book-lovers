@@ -1,4 +1,4 @@
-import searchAll from '../constants/search-all';
+import searchAll from '../constants/searchAll';
 
 const HistoryItem = (props) => {
   return (
