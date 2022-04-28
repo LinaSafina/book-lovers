@@ -7,7 +7,7 @@ import Wrapper from '../components/Layout/Wrapper';
 import useFetch from '../hooks/use-fetch';
 import Loading from '../components/Layout/Loading';
 
-const Favourites = ({ children }) => {
+const Favourites = () => {
   const favourites = useSelector((state) => state.favourites);
   const { email: user } = useSelector((state) => state.user);
   const arrayOfIds = Object.keys(favourites);
