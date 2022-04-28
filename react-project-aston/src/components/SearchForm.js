@@ -8,16 +8,29 @@ const SearchForm = (props) => {
   const langInputRef = useRef();
   const copyrightInputRef = useRef();
   const navigate = useNavigate();
+  const { search, languages, copyright } = props.defaultValues;
 
   const submitFormHandler = (event) => {
     event.preventDefault();
 
+    const enteredSearch = searchInputRef.current.value || searchAll;
+    const enteredLang = langInputRef.current.value || searchAll;
+    const enteredCopyright = copyrightInputRef.current.value || searchAll;
+
+    if (
+      search === enteredSearch &&
+      copyright === enteredCopyright &&
+      languages === enteredLang
+    ) {
+      return;
+    }
+
     navigate({
       pathname: '',
       search: createSearchParams({
-        search: searchInputRef.current.value || searchAll,
-        copyright: copyrightInputRef.current.value || searchAll,
-        languages: langInputRef.current.value || searchAll,
+        search: enteredSearch,
+        copyright: enteredCopyright,
+        languages: enteredLang,
         page: 1,
       }).toString(),
     });
@@ -26,10 +39,10 @@ const SearchForm = (props) => {
   return (
     <form className='form search-form' onSubmit={submitFormHandler}>
       <div className='form__control'>
-        <input ref={searchInputRef} defaultValue={props.defaultValues.search} />
+        <input ref={searchInputRef} defaultValue={search} />
       </div>
       <div className='form__control'>
-        <select ref={langInputRef} defaultValue={props.defaultValues.languages}>
+        <select ref={langInputRef} defaultValue={languages}>
           <option disabled>Language</option>
           <option value=''>All</option>
           <option value='en'>English</option>
@@ -37,10 +50,7 @@ const SearchForm = (props) => {
         </select>
       </div>
       <div className='form__control'>
-        <select
-          ref={copyrightInputRef}
-          defaultValue={props.defaultValues.copyright}
-        >
+        <select ref={copyrightInputRef} defaultValue={copyright}>
           <option disabled>Copyright</option>
           <option value=''>all</option>
           <option value='true'>yes</option>
