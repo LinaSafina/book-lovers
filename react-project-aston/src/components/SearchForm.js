@@ -44,7 +44,7 @@ const SearchForm = (props) => {
       <div className='form__control'>
         <select ref={langInputRef} defaultValue={languages}>
           <option disabled>Language</option>
-          <option value=''>All</option>
+          <option value='all'>All</option>
           <option value='en'>English</option>
           <option value='fr'>French</option>
         </select>
@@ -52,7 +52,7 @@ const SearchForm = (props) => {
       <div className='form__control'>
         <select ref={copyrightInputRef} defaultValue={copyright}>
           <option disabled>Copyright</option>
-          <option value=''>all</option>
+          <option value='all'>all</option>
           <option value='true'>yes</option>
           <option value='false'>no</option>
           <option value='null'>unknown</option>

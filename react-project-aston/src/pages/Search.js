@@ -1,5 +1,9 @@
-import { Fragment, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Fragment } from 'react';
+import {
+  useSearchParams,
+  useNavigate,
+  createSearchParams,
+} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { historyActions } from '../store/history-slice';
@@ -9,27 +13,26 @@ import Wrapper from '../components/Layout/Wrapper';
 import SearchForm from '../components/SearchForm';
 import searchAll from '../constants/searchAll';
 import { useGetBooksQuery } from '../store/api-slice';
+import Pagination from '../components/Layout/Pagination';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const [isFirstLoading, setIsFirstLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const queryParam = (param) => {
-    const queryParam = searchParams.get(param);
-    return (
-      (queryParam && queryParam !== searchAll && `${param}=${queryParam}&`) ||
-      ''
+  const filterLogic = (param) => {
+    return ['search', 'copyright', 'languages', 'page'].some(
+      (elem) => param[0] === elem && param[1] !== searchAll
     );
   };
 
-  const query =
-    queryParam('search') +
-    queryParam('languages') +
-    queryParam('copyright') +
-    queryParam('page');
+  const filteredSearchParams = Object.fromEntries(
+    [...searchParams].filter(filterLogic)
+  );
 
-  const { data, isLoading, isSuccess, isError, error } =
+  const query = createSearchParams(filteredSearchParams).toString();
+
+  const { data, isFetching, isSuccess, isError, error } =
     useGetBooksQuery(query);
 
   let count = 0;
@@ -41,19 +44,14 @@ const Search = () => {
     </p>
   );
 
-  if (isLoading) {
-    console.log('loading...')
+  if (isFetching) {
     content = <Loading />;
   }
 
   if (isSuccess) {
-    if (isFirstLoading) {
-      setIsFirstLoading(false);
-      return;
-    }
-    console.log(data);
     const { results: books } = data;
     count = data.count;
+
     dispatch(historyActions.add(Object.fromEntries([...searchParams])));
 
     if (books.length > 0) {
@@ -64,6 +62,14 @@ const Search = () => {
   if (isError) {
     content = <p className='info'>{error}</p>;
   }
+
+  const pageChangeHandler = (clickedPage) => {
+    const currentSearchParams = { ...filteredSearchParams, page: clickedPage };
+    navigate({
+      path: '',
+      search: createSearchParams(currentSearchParams).toString(),
+    });
+  };
 
   return (
     <Wrapper>
@@ -79,8 +85,23 @@ const Search = () => {
         <p className='search-results'>
           We have found <span className='bold'>{count}</span> books
         </p>
-
+        <Pagination
+          pagination={{
+            onPageChange: pageChangeHandler,
+            totalCount: count,
+            currentPage: parseInt(searchParams.get('page')),
+            pageSize: 32,
+          }}
+        />
         <Fragment>{content}</Fragment>
+        <Pagination
+          pagination={{
+            onPageChange: pageChangeHandler,
+            totalCount: count,
+            currentPage: parseInt(searchParams.get('page')),
+            pageSize: 32,
+          }}
+        />
       </div>
     </Wrapper>
   );

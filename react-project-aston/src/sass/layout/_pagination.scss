@@ -1,0 +1,36 @@
+.pagination {
+  @include flex-center();
+  margin: 20px 0;
+  column-gap: 5px;
+  .pagination-item {
+    @include flex-center;
+    border-radius: 100px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-dark-blue;
+    &:hover {
+      opacity: 0.8;
+      cursor: pointer;
+    }
+  }
+  .page {
+    color: $color-dark-blue;
+  }
+  .button-arrow {
+    background-color: $color-dark-blue;
+    border-radius: 50%;
+    color: $color-white;
+  }
+  .disabled {
+    border: 1px solid black;
+    background-color: $color-light-grey;
+    color: black;
+    pointer-events: none;
+  }
+  .selected {
+    font-weight: 700;
+  }
+}
