@@ -12,6 +12,7 @@ import Loading from '../components/Layout/Loading';
 import Wrapper from '../components/Layout/Wrapper';
 import SearchForm from '../components/SearchForm';
 import searchAll from '../constants/searchAll';
+import searchCategories from '../constants/searchCategories';
 import { useGetBooksQuery } from '../store/api-slice';
 import Pagination from '../components/Layout/Pagination';
 
@@ -21,7 +22,7 @@ const Search = () => {
   const navigate = useNavigate();
 
   const filterLogic = (param) => {
-    return ['search', 'copyright', 'languages', 'page'].some(
+    return searchCategories.some(
       (elem) => param[0] === elem && param[1] !== searchAll
     );
   };
