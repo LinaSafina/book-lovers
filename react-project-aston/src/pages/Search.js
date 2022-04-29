@@ -49,7 +49,7 @@ const Search = () => {
   }
 
   if (isSuccess) {
-    const { results: books } = data;
+    const { books } = data;
     count = data.count;
 
     dispatch(historyActions.add(Object.fromEntries([...searchParams])));
