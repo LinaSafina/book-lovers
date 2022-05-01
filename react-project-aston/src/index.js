@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 
-import { AuthProvider } from './store/auth-context';
+import { ThemeProvider } from './store/theme-context';
 import store from './store';
 import './index.css';
 import App from './App';
@@ -12,13 +12,13 @@ import App from './App';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider>
+    <ThemeProvider>
       <Provider store={store}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
       </Provider>
-    </AuthProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 
