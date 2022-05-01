@@ -8,6 +8,10 @@ export const apiSlice = createApi({
     }),
     getBooksByIds: builder.query({
       query: (ids) => `?ids=${ids}`,
+      transformResponse: (responseData) => {
+        const { results: books } = responseData;
+        return books;
+      },
     }),
     getBooks: builder.query({
       query: (query) => (query && `?${query}`) || '',

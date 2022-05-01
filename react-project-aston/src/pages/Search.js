@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import {
   useSearchParams,
   useNavigate,
@@ -18,6 +17,23 @@ const Search = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
+  const filterValidParams = (param) => {
+    return searchCategories.some((elem) => param[0] === elem);
+  };
+
+  const filterEmptyParams = (param) => {
+    return param[1] !== searchAll;
+  };
+
+  const filteredSearchParams = Object.fromEntries(
+    [...searchParams].filter(filterValidParams).filter(filterEmptyParams)
+  );
+
+  const query = createSearchParams(filteredSearchParams).toString();
+
+  const { data, isFetching, isSuccess, isError, error } =
+    useGetBooksQuery(query);
+
   const pageChangeHandler = (clickedPage) => {
     const currentSearchParams = { ...filteredSearchParams, page: clickedPage };
     navigate({
@@ -25,21 +41,6 @@ const Search = () => {
       search: createSearchParams(currentSearchParams).toString(),
     });
   };
-
-  const filterLogic = (param) => {
-    return searchCategories.some(
-      (elem) => param[0] === elem && param[1] !== searchAll
-    );
-  };
-
-  const filteredSearchParams = Object.fromEntries(
-    [...searchParams].filter(filterLogic)
-  );
-
-  const query = createSearchParams(filteredSearchParams).toString();
-
-  const { data, isFetching, isSuccess, isError, error } =
-    useGetBooksQuery(query);
 
   let count = 0;
 
@@ -57,10 +58,8 @@ const Search = () => {
   if (isSuccess) {
     const { books } = data;
     count = data.count;
-    console.log(count);
 
     if (books.length > 0) {
-      console.log(books);
       content = (
         <>
           <p className='search-results'>
@@ -74,7 +73,13 @@ const Search = () => {
               pageSize: 32,
             }}
           />
-          <BookList books={books} searchParams={[...searchParams]} />;
+          <BookList
+            books={books}
+            searchParams={[...searchParams]
+              .filter(filterValidParams)
+              .filter((param) => param !== 'page')}
+          />
+          ;
           <Pagination
             pagination={{
               onPageChange: pageChangeHandler,
@@ -102,7 +107,6 @@ const Search = () => {
             copyright: searchParams.get('copyright'),
           }}
         />
-
         <>{content}</>
       </div>
     </Wrapper>

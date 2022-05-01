@@ -23,8 +23,6 @@ const usePagination = ({
       paginationComponent, we return the range [1..totalPageCount]
     */
     if (totalPageNumbers >= totalPageCount) {
-      console.log('1', totalPageNumbers, totalPageCount);
-      console.log('1', totalCount, pageSize);
       return range(1, totalPageCount);
     }
 
@@ -45,7 +43,6 @@ const usePagination = ({
     if (!shouldShowLeftDots && shouldShowRightDots) {
       let leftItemCount = 3 + 2 * siblingCount;
       let leftRange = range(1, leftItemCount);
-      console.log('2');
 
       return [...leftRange, 'DOTS', totalPageCount];
     }
@@ -59,7 +56,6 @@ const usePagination = ({
         totalPageCount - rightItemCount + 1,
         totalPageCount
       );
-      console.log('3');
 
       return [firstPageIndex, 'DOTS', ...rightRange];
     }
@@ -69,7 +65,6 @@ const usePagination = ({
     */
     if (shouldShowLeftDots && shouldShowRightDots) {
       let middleRange = range(leftSiblingIndex, rightSiblingIndex);
-      console.log('4');
 
       return [firstPageIndex, 'DOTS', ...middleRange, 'DOTS', lastPageIndex];
     }

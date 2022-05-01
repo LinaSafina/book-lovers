@@ -3,23 +3,28 @@ import { useDispatch } from 'react-redux';
 
 import BookSummary from './BookSummary';
 import { historyActions } from '../store/history-slice';
+import { useEffect } from 'react';
 
 let isFirstLoading = true;
 
 const BookList = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { searchParams } = props;
 
   const clickCardHandler = (bookId) => {
     navigate(`/details/${bookId}`);
   };
 
-  if (isFirstLoading) {
-    isFirstLoading = false;
-  } else {
-    dispatch(historyActions.add(Object.fromEntries(props.searchParams)));
-    isFirstLoading = true;
-  }
+  useEffect(() => {
+    if (isFirstLoading) {
+      isFirstLoading = false;
+    } else {
+      dispatch(historyActions.add(Object.fromEntries(searchParams)));
+    }
+  }, [dispatch, searchParams]);
+
+  // }
 
   const bookList = props.books.map((book) => {
     return (

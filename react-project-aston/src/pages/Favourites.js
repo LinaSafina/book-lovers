@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-import BookList from '../components/BookList';
+import FavouritesList from '../components/FavouritesList';
 import Wrapper from '../components/Layout/Wrapper';
 import Loading from '../components/Layout/Loading';
 import { useGetBooksByIdsQuery } from '../store/api-slice';
@@ -13,8 +13,13 @@ const Favourites = () => {
   const arrayOfIds = Object.keys(favourites);
   const ids = arrayOfIds?.join(',') || -1;
 
-  const { data, isLoading, isSuccess, isError, error } =
-    useGetBooksByIdsQuery(ids);
+  const {
+    data: books,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetBooksByIdsQuery(ids);
 
   let content = (
     <p className='info'>Add your first book in the list of Favourites.</p>
@@ -24,12 +29,8 @@ const Favourites = () => {
     content = <Loading />;
   }
 
-  if (isSuccess) {
-    const { results: books } = data;
-
-    if (books.length > 0) {
-      content = <BookList books={books} />;
-    }
+  if (isSuccess && books.length > 0) {
+    content = <FavouritesList books={books} />;
   }
 
   if (isError) {
