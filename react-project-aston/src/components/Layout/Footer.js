@@ -20,7 +20,6 @@ const Footer = () => {
   return (
     <footer className={footerClasses}>
       <ul className='themes'>
-        Theme:
         <li onClick={oceanThemeHandler}>Ocean </li>
         <li onClick={violetThemeHandler}>Violet</li>
       </ul>

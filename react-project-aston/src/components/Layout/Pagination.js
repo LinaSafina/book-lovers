@@ -7,7 +7,7 @@ const Pagination = (props) => {
     onPageChange,
     totalCount,
     siblingCount = 1,
-    currentPage,
+    currentPage = 1,
     pageSize,
   } = props.pagination;
 
@@ -17,6 +17,8 @@ const Pagination = (props) => {
     siblingCount,
     pageSize,
   });
+
+  console.log(props.pagination);
 
   if (currentPage === 0 || paginationRange.length < 2) {
     return null;

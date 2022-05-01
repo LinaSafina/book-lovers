@@ -36,7 +36,6 @@ const Header = () => {
     ocean: theme === 'ocean',
     violet: theme === 'violet',
   });
-  console.log(headerClasses);
 
   const logoutHandler = () => {
     dispatch(userActions.logout());

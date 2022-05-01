@@ -5,6 +5,8 @@
   font-weight: 700;
   color: $color-white;
   ul {
+    @include flex-center();
+    column-gap: 10vw;
     li {
       cursor: pointer;
     }

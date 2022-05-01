@@ -18,6 +18,14 @@ const Search = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
+  const pageChangeHandler = (clickedPage) => {
+    const currentSearchParams = { ...filteredSearchParams, page: clickedPage };
+    navigate({
+      path: '',
+      search: createSearchParams(currentSearchParams).toString(),
+    });
+  };
+
   const filterLogic = (param) => {
     return searchCategories.some(
       (elem) => param[0] === elem && param[1] !== searchAll
@@ -49,23 +57,40 @@ const Search = () => {
   if (isSuccess) {
     const { books } = data;
     count = data.count;
+    console.log(count);
 
     if (books.length > 0) {
-      content = <BookList books={books} searchParams={[...searchParams]} />;
+      console.log(books);
+      content = (
+        <>
+          <p className='search-results'>
+            We have found <span className='bold'>{count}</span> books
+          </p>
+          <Pagination
+            pagination={{
+              onPageChange: pageChangeHandler,
+              totalCount: count,
+              currentPage: parseInt(searchParams.get('page')) || 1,
+              pageSize: 32,
+            }}
+          />
+          <BookList books={books} searchParams={[...searchParams]} />;
+          <Pagination
+            pagination={{
+              onPageChange: pageChangeHandler,
+              totalCount: count,
+              currentPage: parseInt(searchParams.get('page')) || 1,
+              pageSize: 32,
+            }}
+          />
+        </>
+      );
     }
   }
 
   if (isError) {
     content = <p className='info'>{error}</p>;
   }
-
-  const pageChangeHandler = (clickedPage) => {
-    const currentSearchParams = { ...filteredSearchParams, page: clickedPage };
-    navigate({
-      path: '',
-      search: createSearchParams(currentSearchParams).toString(),
-    });
-  };
 
   return (
     <Wrapper>
@@ -78,26 +103,7 @@ const Search = () => {
           }}
         />
 
-        <p className='search-results'>
-          We have found <span className='bold'>{count}</span> books
-        </p>
-        <Pagination
-          pagination={{
-            onPageChange: pageChangeHandler,
-            totalCount: count,
-            currentPage: parseInt(searchParams.get('page')),
-            pageSize: 32,
-          }}
-        />
-        <Fragment>{content}</Fragment>
-        <Pagination
-          pagination={{
-            onPageChange: pageChangeHandler,
-            totalCount: count,
-            currentPage: parseInt(searchParams.get('page')),
-            pageSize: 32,
-          }}
-        />
+        <>{content}</>
       </div>
     </Wrapper>
   );

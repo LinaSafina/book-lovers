@@ -342,6 +342,12 @@ header.violet a:hover {
   font-weight: 700;
   color: #ffffff;
 }
+.footer ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 10vw;
+}
 .footer ul li {
   cursor: pointer;
 }
