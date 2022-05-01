@@ -4,9 +4,7 @@ import {
   useNavigate,
   createSearchParams,
 } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
-import { historyActions } from '../store/history-slice';
 import BookList from '../components/BookList';
 import Loading from '../components/Layout/Loading';
 import Wrapper from '../components/Layout/Wrapper';
@@ -18,7 +16,6 @@ import Pagination from '../components/Layout/Pagination';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const filterLogic = (param) => {
@@ -53,10 +50,8 @@ const Search = () => {
     const { books } = data;
     count = data.count;
 
-    dispatch(historyActions.add(Object.fromEntries([...searchParams])));
-
     if (books.length > 0) {
-      content = <BookList books={books} />;
+      content = <BookList books={books} searchParams={[...searchParams]} />;
     }
   }
 
