@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types'
 
 import useValidation from '../hooks/use-validation';
 import { userActions } from '../store/user-slice';
@@ -70,5 +71,10 @@ const AuthForm = (props) => {
     </section>
   );
 };
+
+AuthForm.propTypes = {
+  type: PropTypes.oneOf(['signin', 'signup']),
+  header: PropTypes.string
+}
 
 export default AuthForm;

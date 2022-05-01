@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import editFetchData from '../helpers/editFetchData';
 import HeartIcon from './HeartIcon';
 
@@ -30,5 +32,14 @@ const BookDetails = (props) => {
     </div>
   );
 };
+
+BookDetails.propTypes = PropTypes.shape({
+  id: PropTypes.string,
+  cover: PropTypes.string,
+  title: PropTypes.string,
+  download_count: PropTypes.string,
+  languages: PropTypes.string,
+  authors: PropTypes.string
+})
 
 export default BookDetails;

@@ -1,50 +1,39 @@
-import { useEffect, Fragment, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Fragment } from 'react';
+import {
+  useSearchParams,
+  useNavigate,
+  createSearchParams,
+} from 'react-router-dom';
 
-import useFetch from '../hooks/use-fetch';
-import { historyActions } from '../store/history-slice';
 import BookList from '../components/BookList';
 import Loading from '../components/Layout/Loading';
 import Wrapper from '../components/Layout/Wrapper';
 import SearchForm from '../components/SearchForm';
 import searchAll from '../constants/searchAll';
+import searchCategories from '../constants/searchCategories';
+import { useGetBooksQuery } from '../store/api-slice';
+import Pagination from '../components/Layout/Pagination';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
-  const dispatch = useDispatch();
-  const [isFirstLoading, setIsFirstLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const queryParam = (param) => {
-    const queryParam = searchParams.get(param);
-    return (
-      (queryParam && queryParam !== searchAll && `${param}=${queryParam}&`) ||
-      ''
+  const filterLogic = (param) => {
+    return searchCategories.some(
+      (elem) => param[0] === elem && param[1] !== searchAll
     );
   };
 
-  const query =
-    '?' +
-    queryParam('search') +
-    queryParam('languages') +
-    queryParam('copyright') +
-    queryParam('page');
+  const filteredSearchParams = Object.fromEntries(
+    [...searchParams].filter(filterLogic)
+  );
 
-  const { fetchBooksHandler, data, isLoading, error } = useFetch(query);
-  const books = data?.results;
-  const count = data?.count;
+  const query = createSearchParams(filteredSearchParams).toString();
 
-  useEffect(() => {
-    const fetchData = async () => await fetchBooksHandler();
-    fetchData();
+  const { data, isFetching, isSuccess, isError, error } =
+    useGetBooksQuery(query);
 
-    if (isFirstLoading) {
-      setIsFirstLoading(false);
-      return;
-    }
-
-    dispatch(historyActions.add(Object.fromEntries([...searchParams])));
-  }, [fetchBooksHandler, searchParams, dispatch, isFirstLoading]);
+  let count = 0;
 
   let content = (
     <p className='info'>
@@ -53,17 +42,30 @@ const Search = () => {
     </p>
   );
 
-  if (books?.length > 0) {
-    content = <BookList books={books} />;
-  }
-
-  if (isLoading) {
+  if (isFetching) {
     content = <Loading />;
   }
 
-  if (error) {
+  if (isSuccess) {
+    const { books } = data;
+    count = data.count;
+
+    if (books.length > 0) {
+      content = <BookList books={books} searchParams={[...searchParams]} />;
+    }
+  }
+
+  if (isError) {
     content = <p className='info'>{error}</p>;
   }
+
+  const pageChangeHandler = (clickedPage) => {
+    const currentSearchParams = { ...filteredSearchParams, page: clickedPage };
+    navigate({
+      path: '',
+      search: createSearchParams(currentSearchParams).toString(),
+    });
+  };
 
   return (
     <Wrapper>
@@ -79,8 +81,23 @@ const Search = () => {
         <p className='search-results'>
           We have found <span className='bold'>{count}</span> books
         </p>
-
+        <Pagination
+          pagination={{
+            onPageChange: pageChangeHandler,
+            totalCount: count,
+            currentPage: parseInt(searchParams.get('page')),
+            pageSize: 32,
+          }}
+        />
         <Fragment>{content}</Fragment>
+        <Pagination
+          pagination={{
+            onPageChange: pageChangeHandler,
+            totalCount: count,
+            currentPage: parseInt(searchParams.get('page')),
+            pageSize: 32,
+          }}
+        />
       </div>
     </Wrapper>
   );
