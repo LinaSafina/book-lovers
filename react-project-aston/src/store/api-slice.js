@@ -5,6 +5,26 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     getBookById: builder.query({
       query: (id) => `/${id}`,
+      transformResponse: (responseData) => {
+        const {
+          id,
+          formats,
+          title,
+          download_count,
+          languages,
+          subjects,
+          authors,
+        } = responseData;
+        return {
+          id,
+          formats,
+          title,
+          download_count,
+          languages,
+          subjects,
+          authors,
+        };
+      },
     }),
     getBooksByIds: builder.query({
       query: (ids) => `?ids=${ids}`,

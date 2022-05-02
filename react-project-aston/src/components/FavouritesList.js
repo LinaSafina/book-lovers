@@ -14,7 +14,7 @@ const FavouritesList = (props) => {
       <BookSummary
         key={book.id}
         book={book}
-        onClick={clickCardHandler.bind(null, book.id)}
+        onClick={()=>clickCardHandler(book.id)}
       />
     );
   });

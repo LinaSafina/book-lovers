@@ -1,8 +1,9 @@
 import classNames from 'classnames';
+import React from 'react';
 
 import usePagination from '../../hooks/use-pagination';
 
-const Pagination = (props) => {
+const Pagination = React.memo((props) => {
   const {
     onPageChange,
     totalCount,
@@ -61,7 +62,7 @@ const Pagination = (props) => {
       {paginationRange.map((pageNumber, index) => {
         if (pageNumber === 'DOTS') {
           return (
-            <span key='dots' className='pagination-item'>
+            <span key={Math.random().toString()} className='pagination-item'>
               &#8230;
             </span>
           );
@@ -97,6 +98,6 @@ const Pagination = (props) => {
       </button>
     </div>
   );
-};
+});
 
 export default Pagination;

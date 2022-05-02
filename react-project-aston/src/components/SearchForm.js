@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   useNavigate,
   createSearchParams,
@@ -8,55 +8,37 @@ import debounce from 'lodash.debounce';
 
 import searchAll from '../constants/searchAll';
 
+let isFirstLoading = true;
+
 const SearchForm = (props) => {
-  const searchInputRef = useRef();
-  const langInputRef = useRef();
-  const copyrightInputRef = useRef();
   const navigate = useNavigate();
   const { search, languages, copyright } = props.defaultValues;
-  const [searchInput, setSearchInput] = useState('');
-  const [langInput, setLangInput] = useState('');
-  const [copyrightInput, setCopyrightInput] = useState('');
+  const [searchInput, setSearchInput] = useState(search);
+  const [langInput, setLangInput] = useState(languages);
+  const [copyrightInput, setCopyrightInput] = useState(copyright);
   const [searchParams] = useSearchParams();
-  let isFirstLoading = true;
 
   const submitFormHandler = (e) => {
     e.preventDefault();
+  };
 
-    const enteredSearch = searchInputRef.current.value || searchAll;
-    const enteredLang = langInputRef.current.value || searchAll;
-    const enteredCopyright = copyrightInputRef.current.value || searchAll;
+  const delayedSearchHandler = useCallback(() => {
+    const newSearchParams = createSearchParams({
+      search: searchInput,
+      copyright: copyrightInput,
+      languages: langInput,
+      page: searchParams.get('page') || 1,
+    }).toString();
 
-    if (
-      search === enteredSearch &&
-      copyright === enteredCopyright &&
-      languages === enteredLang
-    ) {
+    if (searchParams.toString() === newSearchParams) {
       return;
     }
 
     navigate({
       pathname: '',
-      search: createSearchParams({
-        search: enteredSearch,
-        copyright: enteredCopyright,
-        languages: enteredLang,
-        page: 1,
-      }).toString(),
+      search: newSearchParams,
     });
-  };
-
-  const delayedSearchHandler = () => {
-    navigate({
-      pathname: '',
-      search: createSearchParams({
-        search: searchInputRef.current.value,
-        copyright: copyrightInputRef.current.value,
-        languages: langInputRef.current.value,
-        page: searchParams.get('page') || 1,
-      }).toString(),
-    });
-  };
+  },[copyrightInput,langInput,navigate,searchInput, searchParams]);
 
   const delayedSearch = useCallback(debounce(delayedSearchHandler, 1000), [
     searchInput,
@@ -76,30 +58,23 @@ const SearchForm = (props) => {
 
   useEffect(() => {
     if (isFirstLoading) {
-    } else {
-      delayedSearch();
+      isFirstLoading = false;
 
-      return delayedSearch.cancel;
+      return;
     }
-  }, [searchInput, langInput, copyrightInput, delayedSearch, isFirstLoading]);
 
-  isFirstLoading = false;
+    delayedSearch();
+
+    return delayedSearch.cancel;
+  }, [searchInput, langInput, copyrightInput, delayedSearch]);
 
   return (
     <form className='form search-form' onSubmit={submitFormHandler}>
       <div className='form__control'>
-        <input
-          ref={searchInputRef}
-          onChange={changeInputHandler}
-          defaultValue={search}
-        />
+        <input value={searchInput} onChange={changeInputHandler} />
       </div>
       <div className='form__control'>
-        <select
-          ref={langInputRef}
-          defaultValue={languages}
-          onChange={changeLangHandler}
-        >
+        <select value={langInput} onChange={changeLangHandler}>
           <option disabled>Language</option>
           <option value={searchAll}>All</option>
           <option value='en'>English</option>
@@ -107,22 +82,12 @@ const SearchForm = (props) => {
         </select>
       </div>
       <div className='form__control'>
-        <select
-          ref={copyrightInputRef}
-          defaultValue={copyright}
-          onChange={changeCopyrightHandler}
-        >
+        <select value={copyrightInput} onChange={changeCopyrightHandler}>
           <option disabled>Copyright</option>
           <option value={searchAll}>all</option>
           <option value='true'>yes</option>
           <option value='false'>no</option>
-          <option value='null'>unknown</option>
         </select>
-      </div>
-      <div className='form__action'>
-        {/* <button className='button' type='submit'>
-          Search
-        </button> */}
       </div>
     </form>
   );

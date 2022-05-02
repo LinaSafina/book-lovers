@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Wrapper from '../components/Layout/Wrapper';
+import searchAll from '../constants/searchAll';
 
 const HomePage = () => {
   const searchInputRef = useRef();
@@ -12,7 +13,11 @@ const HomePage = () => {
 
     const enteredSearchValue = searchInputRef.current.value;
 
-    navigate(`/search?search=${enteredSearchValue}&page=${1}`);
+    navigate(
+      `/search?search=${
+        enteredSearchValue || searchAll
+      }&copyright=${searchAll}&languages=${searchAll}&page=1`
+    );
   };
 
   return (

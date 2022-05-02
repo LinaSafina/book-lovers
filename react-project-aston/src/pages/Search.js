@@ -3,6 +3,7 @@ import {
   useNavigate,
   createSearchParams,
 } from 'react-router-dom';
+import { useCallback} from 'react';
 
 import BookList from '../components/BookList';
 import Loading from '../components/Layout/Loading';
@@ -17,13 +18,19 @@ const Search = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const filterValidParams = (param) => {
+  const filterValidParams = useCallback((param) => {
     return searchCategories.some((elem) => param[0] === elem);
-  };
+  },[]);
 
-  const filterEmptyParams = (param) => {
+  const filterEmptyParams = useCallback((param) => {
     return param[1] !== searchAll;
-  };
+  },[]);
+
+  const filteredValidParams = Object.fromEntries(
+    [...searchParams]
+      .filter(filterValidParams)
+      .filter((param) => param !== 'page')
+  );
 
   const filteredSearchParams = Object.fromEntries(
     [...searchParams].filter(filterValidParams).filter(filterEmptyParams)
@@ -34,16 +41,20 @@ const Search = () => {
   const { data, isFetching, isSuccess, isError, error } =
     useGetBooksQuery(query);
 
-  const pageChangeHandler = (clickedPage) => {
-    const currentSearchParams = { ...filteredSearchParams, page: clickedPage };
-    navigate({
-      path: '',
-      search: createSearchParams(currentSearchParams).toString(),
-    });
-  };
+  const pageChangeHandler = useCallback(
+    (clickedPage) => {
+      navigate({
+        path: '',
+        search: createSearchParams({
+          ...filteredValidParams,
+          page: clickedPage,
+        }).toString(),
+      }, {state: {component:'pagination'}});
+    },
+    [filteredValidParams, navigate]
+  );
 
   let count = 0;
-
   let content = (
     <p className='info'>
       Sorry, we couldn't find any books. Change the search parameters and try
@@ -73,13 +84,7 @@ const Search = () => {
               pageSize: 32,
             }}
           />
-          <BookList
-            books={books}
-            searchParams={[...searchParams]
-              .filter(filterValidParams)
-              .filter((param) => param !== 'page')}
-          />
-          ;
+          <BookList books={books} searchParams={filteredValidParams} />;
           <Pagination
             pagination={{
               onPageChange: pageChangeHandler,
@@ -102,9 +107,9 @@ const Search = () => {
       <div className='search-page'>
         <SearchForm
           defaultValues={{
-            search: searchParams.get('search'),
-            languages: searchParams.get('languages'),
-            copyright: searchParams.get('copyright'),
+            search: filteredSearchParams.search||'',
+            languages: filteredSearchParams.languages||searchAll,
+            copyright: filteredSearchParams.copyright||searchAll,
           }}
         />
         <>{content}</>
