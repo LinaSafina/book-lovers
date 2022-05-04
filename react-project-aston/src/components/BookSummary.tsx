@@ -1,7 +1,10 @@
 import HeartIcon from './HeartIcon';
 import editFetchData from '../helpers/editFetchData';
+import { BookData } from '../types/types';
 
-const BookSummary = (props) => {
+const BookSummary: React.FC<{ book: BookData; onClick: () => void }> = (
+  props
+) => {
   const { book } = props;
   const changedData = editFetchData(book);
   let { title, authors } = changedData;

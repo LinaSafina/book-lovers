@@ -13,7 +13,7 @@ const usePagination = ({
     const range = (start, end) => {
       let length = end - start + 1;
       return Array(length)
-        .fill()
+        .fill(0)
         .map((e, i) => i + start);
     };
 

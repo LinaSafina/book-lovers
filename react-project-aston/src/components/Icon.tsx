@@ -1,4 +1,9 @@
-const Icon = (props) => {
+import React from 'react';
+
+const Icon: React.FC<{
+  classes: string;
+  onIconClick: (event: React.MouseEvent) => void;
+}> = (props) => {
   // div сделать кликабельным
   return (
     <div className='icon' onClick={props.onIconClick}>

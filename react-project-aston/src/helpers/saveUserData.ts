@@ -1,6 +1,6 @@
-const saveUserData = (store) => (next) => (action) => {
+const saveUserData = (store: any) => (next: any) => (action: any) => {
   function logoutActionCreator() {
-    return (dispatch) => {
+    return (dispatch: any) => {
       dispatch({ type: 'user/logout' });
       dispatch({ type: 'history/deleteAll' });
       dispatch({ type: 'favourites/deleteAll' });
@@ -9,10 +9,10 @@ const saveUserData = (store) => (next) => (action) => {
 
   switch (action.type) {
     case 'user/logout': {
-      let savedStore = localStorage.getItem('store');
-      savedStore = savedStore ? JSON.parse(savedStore) : {};
-      let userData = store.getState();
-      savedStore[userData.user.email] = {
+      const savedStore = localStorage.getItem('store');
+      const parsedSavedStore = savedStore ? JSON.parse(savedStore) : {};
+      const userData = store.getState();
+      parsedSavedStore[userData.user.email] = {
         user: userData.user,
         history: userData.history,
         favourites: userData.favourites,
@@ -29,9 +29,9 @@ const saveUserData = (store) => (next) => (action) => {
     }
 
     case 'user/login': {
-      let savedStore = localStorage.getItem('store');
-      savedStore = savedStore ? JSON.parse(savedStore) : {};
-      const userData = savedStore[action.payload];
+      const savedStore = localStorage.getItem('store');
+      const parsedSavedStore = savedStore ? JSON.parse(savedStore) : {};
+      const userData = parsedSavedStore[action.payload];
       const history = JSON.stringify(userData.history);
       const favourites = JSON.stringify(userData.favourites);
 
@@ -55,9 +55,9 @@ const saveUserData = (store) => (next) => (action) => {
     }
 
     case 'user/signup': {
-      let savedStore = localStorage.getItem('store');
-      savedStore = savedStore ? JSON.parse(savedStore) : {};
-      let userData = savedStore[action.payload];
+      const savedStore = localStorage.getItem('store');
+      const parsedSavedStore = savedStore ? JSON.parse(savedStore) : {};
+      const userData = parsedSavedStore[action.payload];
 
       if (userData) {
         alert('This email already exists. Please, Sign In.');
@@ -72,7 +72,7 @@ const saveUserData = (store) => (next) => (action) => {
         return result;
       } else {
         localStorage.setItem('currentUser', JSON.stringify(action.payload));
-        savedStore[action.payload] = { user: { email: action.payload } };
+        parsedSavedStore[action.payload] = { user: { email: action.payload } };
         localStorage.setItem('store', JSON.stringify(savedStore));
       }
 

@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 
-const useValidation = (inputType) => {
-  const inputRef = useRef();
+const useValidation = (inputType: string) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isInvalid, setIsInvalid] = useState(false);
 
   const validateInput = (input) => {
@@ -17,7 +17,7 @@ const useValidation = (inputType) => {
     }
   };
 
-  const submitValueHandler = (currentValue) => {
+  const submitValueHandler = (currentValue: string) => {
     let isValueValid = validateInput(currentValue);
 
     setIsInvalid(!isValueValid);

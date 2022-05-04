@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 
+import { Props } from '../types/types';
+
 const ThemeContext = React.createContext({
   theme: 'ocean',
-  changeTheme: (theme) => {},
+  changeTheme: (theme: string) => {},
 });
 
-export const ThemeProvider = (props) => {
+export const ThemeProvider: React.FC<Props> = (props) => {
   const [theme, setTheme] = useState(
     () => localStorage.getItem('theme') || 'oceans'
   );
-  const changeTheme = (chosenTheme) => {
+  const changeTheme = (chosenTheme: string) => {
     if (theme === chosenTheme) {
       return;
     }

@@ -1,14 +1,14 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Wrapper from '../components/Layout/Wrapper';
 import searchAll from '../constants/searchAll';
 
 const HomePage = () => {
-  const searchInputRef = useRef();
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const submitSearchHandler = (event) => {
+  const submitSearchHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
     const enteredSearchValue = searchInputRef.current.value;

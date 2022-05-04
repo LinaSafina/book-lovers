@@ -5,12 +5,13 @@ import classNames from 'classnames';
 import HistoryItem from '../components/HistoryItem';
 import Wrapper from '../components/Layout/Wrapper';
 import { historyActions } from '../store/history-slice';
+import { RootState } from '../types/types';
 
 const History = () => {
   const navigate = useNavigate();
-  const history = useSelector((state) => state.history);
+  const history = useSelector((state: RootState) => state.history);
   const isHistoryEmpty = history.length === 0;
-  const { email: user } = useSelector((state) => state.user);
+  const { email: user } = useSelector((state: RootState) => state.user);
   const clearButtonClasses = classNames('button', { disabled: isHistoryEmpty });
 
   const historyList = history.map((item) => {

@@ -3,7 +3,15 @@ import React from 'react';
 
 import usePagination from '../../hooks/use-pagination';
 
-const Pagination = React.memo((props) => {
+const Pagination: React.FC<{
+  pagination: {
+    onPageChange: (page: number) => void;
+    totalCount: number;
+    siblingCount?: number;
+    pageSize: number;
+    currentPage: number;
+  };
+}> = React.memo((props) => {
   const {
     onPageChange,
     totalCount,
@@ -19,11 +27,11 @@ const Pagination = React.memo((props) => {
     pageSize,
   });
 
-  if (currentPage === 0 || paginationRange.length < 2) {
+  if (currentPage === 0 || paginationRange?.length < 2) {
     return null;
   }
 
-  let lastPage = paginationRange[paginationRange.length - 1];
+  let lastPage = paginationRange[paginationRange?.length - 1];
 
   const onFirst = () => {
     onPageChange(1);

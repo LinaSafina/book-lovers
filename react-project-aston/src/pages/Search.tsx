@@ -3,7 +3,7 @@ import {
   useNavigate,
   createSearchParams,
 } from 'react-router-dom';
-import { useCallback} from 'react';
+import { useCallback } from 'react';
 
 import BookList from '../components/BookList';
 import Loading from '../components/Layout/Loading';
@@ -20,16 +20,16 @@ const Search = () => {
 
   const filterValidParams = useCallback((param) => {
     return searchCategories.some((elem) => param[0] === elem);
-  },[]);
+  }, []);
 
   const filterEmptyParams = useCallback((param) => {
     return param[1] !== searchAll;
-  },[]);
+  }, []);
 
   const filteredValidParams = Object.fromEntries(
     [...searchParams]
       .filter(filterValidParams)
-      .filter((param) => param !== 'page')
+      .filter((param) => param[0] !== 'page')
   );
 
   const filteredSearchParams = Object.fromEntries(
@@ -38,18 +38,17 @@ const Search = () => {
 
   const query = createSearchParams(filteredSearchParams).toString();
 
-  const { data, isFetching, isSuccess, isError, error } =
-    useGetBooksQuery(query);
+  const { data, isFetching, isSuccess, isError } = useGetBooksQuery(query);
 
   const pageChangeHandler = useCallback(
-    (clickedPage) => {
-      navigate({
-        path: '',
-        search: createSearchParams({
+    (clickedPage: number) => {
+      navigate(
+        `${createSearchParams({
           ...filteredValidParams,
-          page: clickedPage,
-        }).toString(),
-      }, {state: {component:'pagination'}});
+          page: clickedPage.toString(),
+        }).toString()}`,
+        { state: { component: 'pagination' } }
+      );
     },
     [filteredValidParams, navigate]
   );
@@ -99,7 +98,7 @@ const Search = () => {
   }
 
   if (isError) {
-    content = <p className='info'>{error}</p>;
+    content = <p className='info'>{'Something went wrong!'}</p>;
   }
 
   return (
@@ -107,9 +106,9 @@ const Search = () => {
       <div className='search-page'>
         <SearchForm
           defaultValues={{
-            search: filteredSearchParams.search||'',
-            languages: filteredSearchParams.languages||searchAll,
-            copyright: filteredSearchParams.copyright||searchAll,
+            search: filteredSearchParams.search || '',
+            languages: filteredSearchParams.languages || searchAll,
+            copyright: filteredSearchParams.copyright || searchAll,
           }}
         />
         <>{content}</>

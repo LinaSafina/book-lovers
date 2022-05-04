@@ -11,7 +11,6 @@ const Details = () => {
     isLoading,
     isSuccess,
     isError,
-    error,
   } = useGetBookByIdQuery(params.bookId);
 
   let content = (
@@ -27,7 +26,7 @@ const Details = () => {
   }
 
   if (isError) {
-    content = <p className='info'>{error}</p>;
+    content = <p className='info'>{'Something went wrong!'}</p>;
   }
 
   return <div className='details'>{content}</div>;

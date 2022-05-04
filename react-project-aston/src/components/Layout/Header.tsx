@@ -6,18 +6,20 @@ import classNames from 'classnames';
 import { userActions } from '../../store/user-slice';
 import Wrapper from './Wrapper';
 import ThemeContext from '../../store/theme-context';
+import { RootState } from '../../types/types';
 
 const activeLinkStyle = {
   textDecoration: 'underline',
 };
+const linkStyle = { textDecoration: 'none' };
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { email: user } = useSelector((state) => {
+  const { email: user } = useSelector((state: RootState) => {
     return state.user;
   });
-  const favourites = useSelector((state) => state.favourites);
+  const favourites = useSelector((state: RootState) => state.favourites);
   const amountOfFavourites = Object.keys(favourites).length;
   const [isBtnAnimated, setIsBtnAnimated] = useState(false);
   const { theme } = useContext(ThemeContext);
@@ -60,7 +62,7 @@ const Header = () => {
                     <NavLink
                       to='/signin'
                       style={({ isActive }) =>
-                        isActive ? activeLinkStyle : undefined
+                        isActive ? activeLinkStyle : linkStyle
                       }
                     >
                       Sign in
@@ -70,7 +72,7 @@ const Header = () => {
                     <NavLink
                       to='/signup'
                       style={({ isActive }) =>
-                        isActive ? activeLinkStyle : undefined
+                        isActive ? activeLinkStyle : linkStyle
                       }
                     >
                       Sign up

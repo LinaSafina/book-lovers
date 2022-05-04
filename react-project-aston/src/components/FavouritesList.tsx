@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 
 import BookSummary from './BookSummary';
+import { BookData } from '../types/types';
 
-const FavouritesList = (props) => {
+const FavouritesList: React.FC<{ books: BookData[] }> = (props) => {
   const navigate = useNavigate();
 
-  const clickCardHandler = (bookId) => {
+  const clickCardHandler = (bookId: number) => {
     navigate(`/details/${bookId}`);
   };
 
@@ -14,7 +15,7 @@ const FavouritesList = (props) => {
       <BookSummary
         key={book.id}
         book={book}
-        onClick={()=>clickCardHandler(book.id)}
+        onClick={() => clickCardHandler(book.id)}
       />
     );
   });

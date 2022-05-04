@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 
 import editFetchData from '../helpers/editFetchData';
+import { BookData } from '../types/types';
 import HeartIcon from './HeartIcon';
 
-const BookDetails = (props) => {
+const BookDetails: React.FC<{ book: any }> = (props) => {
   const { book } = props;
   const changedData = editFetchData(book);
 
@@ -33,14 +34,17 @@ const BookDetails = (props) => {
   );
 };
 
-BookDetails.propTypes = {book: PropTypes.shape({
-  id: PropTypes.number,
-  formats: PropTypes.object,
-  title: PropTypes.string,
-  download_count: PropTypes.number,
-  languages: PropTypes.array,
-  subjects: PropTypes.array,
-  authors: PropTypes.array,
-})};
+BookDetails.propTypes = {
+  book: PropTypes.shape({
+    id: PropTypes.number,
+    detail: PropTypes.string,
+    formats: PropTypes.object,
+    title: PropTypes.string,
+    download_count: PropTypes.number,
+    languages: PropTypes.array,
+    subjects: PropTypes.array,
+    authors: PropTypes.array,
+  }),
+};
 
 export default BookDetails;

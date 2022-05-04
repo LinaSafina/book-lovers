@@ -4,17 +4,19 @@ import { useNavigate } from 'react-router-dom';
 
 import { favouritesActions } from '../store/favourites-slice';
 import Icon from './Icon';
+import { RootState, FavouriteObject } from '../types/types';
+import React from 'react';
 
-const HeartIcon = (props) => {
+const HeartIcon: React.FC<{ id: number }> = (props) => {
   const navigate = useNavigate();
-  const favourites = useSelector((state) => state.favourites);
-  const {email:user} = useSelector((state) => state.user);
+  const favourites = useSelector((state: RootState) => state.favourites);
+  const { email: user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-  const {id} = props;
+  const { id } = props;
   const isFavourite = favourites[id];
   const heartIconClasses = classNames('heart-icon', { favourite: isFavourite });
 
-  const clickIconHandler = (event) => {
+  const clickIconHandler = (event: React.MouseEvent) => {
     event.stopPropagation();
     if (!user) {
       navigate('/signin');

@@ -5,10 +5,11 @@ import FavouritesList from '../components/FavouritesList';
 import Wrapper from '../components/Layout/Wrapper';
 import Loading from '../components/Layout/Loading';
 import { useGetBooksByIdsQuery } from '../store/api-slice';
+import { RootState } from '../types/types';
 
 const Favourites = () => {
-  const favourites = useSelector((state) => state.favourites);
-  const { email: user } = useSelector((state) => state.user);
+  const favourites = useSelector((state: RootState) => state.favourites);
+  const { email: user } = useSelector((state: RootState) => state.user);
 
   const arrayOfIds = Object.keys(favourites);
   const ids = arrayOfIds?.join(',') || -1;
@@ -18,7 +19,6 @@ const Favourites = () => {
     isLoading,
     isSuccess,
     isError,
-    error,
   } = useGetBooksByIdsQuery(ids);
 
   let content = (
@@ -34,7 +34,7 @@ const Favourites = () => {
   }
 
   if (isError) {
-    content = <p className='info'>{error}</p>;
+    content = <p className='info'>{'Something went wrong!'}</p>;
   }
 
   if (!user) {

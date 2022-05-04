@@ -1,12 +1,14 @@
 import { Component, Fragment } from 'react';
 
-class ErrorBoundary extends Component {
-  constructor() {
-    super();
+import { Props } from '../types/types';
+
+class ErrorBoundary extends Component<Props, { hasError: boolean }> {
+  constructor(props: Props) {
+    super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: any) {
     return { hasError: true };
   }
 

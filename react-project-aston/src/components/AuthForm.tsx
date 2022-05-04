@@ -1,10 +1,11 @@
 import { useDispatch } from 'react-redux';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import useValidation from '../hooks/use-validation';
 import { userActions } from '../store/user-slice';
+import React from 'react';
 
-const AuthForm = (props) => {
+const AuthForm: React.FC<{ header: string; type: string }> = (props) => {
   const dispatch = useDispatch();
 
   const {
@@ -19,11 +20,11 @@ const AuthForm = (props) => {
     submitValueHandler: submitPasswordHandler,
   } = useValidation('password');
 
-  const submitHandler = (event) => {
+  const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    const enteredEmail = emailInputRef.current.value;
-    const enteredPassword = passwordInputRef.current.value;
+    const enteredEmail = emailInputRef.current!.value;
+    const enteredPassword = passwordInputRef.current!.value;
     const isEmailValid = submitEmailHandler(enteredEmail);
     const isPasswordValid = submitPasswordHandler(enteredPassword);
 
@@ -74,7 +75,7 @@ const AuthForm = (props) => {
 
 AuthForm.propTypes = {
   type: PropTypes.oneOf(['signin', 'signup']),
-  header: PropTypes.string
-}
+  header: PropTypes.string,
+};
 
 export default AuthForm;

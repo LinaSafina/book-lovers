@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   useNavigate,
   createSearchParams,
@@ -10,15 +10,17 @@ import searchAll from '../constants/searchAll';
 
 let isFirstLoading = true;
 
-const SearchForm = (props) => {
+const SearchForm: React.FC<{
+  defaultValues: { search: string; languages: string; copyright: string };
+}> = (props) => {
   const navigate = useNavigate();
   const { search, languages, copyright } = props.defaultValues;
-  const [searchInput, setSearchInput] = useState(search);
-  const [langInput, setLangInput] = useState(languages);
-  const [copyrightInput, setCopyrightInput] = useState(copyright);
+  const [searchInput, setSearchInput] = useState<string>(search);
+  const [langInput, setLangInput] = useState<string>(languages);
+  const [copyrightInput, setCopyrightInput] = useState<string>(copyright);
   const [searchParams] = useSearchParams();
 
-  const submitFormHandler = (e) => {
+  const submitFormHandler = (e: React.FormEvent) => {
     e.preventDefault();
   };
 
@@ -27,7 +29,7 @@ const SearchForm = (props) => {
       search: searchInput,
       copyright: copyrightInput,
       languages: langInput,
-      page: searchParams.get('page') || 1,
+      page: searchParams.get('page') || '1',
     }).toString();
 
     if (searchParams.toString() === newSearchParams) {
@@ -38,7 +40,7 @@ const SearchForm = (props) => {
       pathname: '',
       search: newSearchParams,
     });
-  },[copyrightInput,langInput,navigate,searchInput, searchParams]);
+  }, [copyrightInput, langInput, navigate, searchInput, searchParams]);
 
   const delayedSearch = useCallback(debounce(delayedSearchHandler, 1000), [
     searchInput,
@@ -46,13 +48,13 @@ const SearchForm = (props) => {
     copyrightInput,
   ]);
 
-  const changeInputHandler = (e) => {
+  const changeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
-  const changeLangHandler = (e) => {
+  const changeLangHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLangInput(e.target.value);
   };
-  const changeCopyrightHandler = (e) => {
+  const changeCopyrightHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCopyrightInput(e.target.value);
   };
 

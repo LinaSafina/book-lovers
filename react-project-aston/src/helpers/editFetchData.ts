@@ -1,6 +1,7 @@
 import bookImage from '../assets/alif-caesar-rizqi-pratama-loUlSOXL81c-unsplash.jpg';
+import { BookData } from '../types/types';
 
-const editFetchData = (data) => {
+const editFetchData = (data: BookData) => {
   let authors = data.authors.reduce((prev, curr) => prev + curr.name + ' ', '');
 
   const bookCover =
@@ -11,7 +12,7 @@ const editFetchData = (data) => {
   return {
     ...data,
     authors,
-    cover:bookCover,
+    cover: bookCover,
     downloadCount: data['download_count'],
   };
 };
