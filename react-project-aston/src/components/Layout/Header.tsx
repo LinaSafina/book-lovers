@@ -41,6 +41,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(userActions.logout());
+    navigate(0);
   };
 
   return (
