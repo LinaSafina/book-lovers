@@ -24,8 +24,8 @@ const saveUserData = (store: any) => (next: any) => (action: any) => {
       const savedStore = localStorage.getItem('store');
       const parsedSavedStore = savedStore ? JSON.parse(savedStore) : {};
       const userData = parsedSavedStore[action.payload];
-      const history = JSON.stringify(userData.history);
-      const favourites = JSON.stringify(userData.favourites);
+      const history = JSON.stringify(userData?.history);
+      const favourites = JSON.stringify(userData?.favourites);
 
       if (userData) {
         localStorage.setItem('currentUser', JSON.stringify(userData.user));
