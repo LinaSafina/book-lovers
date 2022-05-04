@@ -1,12 +1,14 @@
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import useValidation from '../hooks/use-validation';
 import { userActions } from '../store/user-slice';
-import React from 'react';
 
 const AuthForm: React.FC<{ header: any; type: any }> = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     inputRef: emailInputRef,
@@ -34,6 +36,7 @@ const AuthForm: React.FC<{ header: any; type: any }> = (props) => {
       props.type === 'signin'
         ? dispatch(userActions.login(enteredEmail))
         : dispatch(userActions.signup(enteredEmail));
+      navigate(0);
     }
   };
 

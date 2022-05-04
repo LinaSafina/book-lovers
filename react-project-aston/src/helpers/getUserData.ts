@@ -15,10 +15,10 @@ const getUserData = () => {
       };
       return initialUserData;
     } else {
-      return { user: null, favourites: {}, history: [] };
+      return { user: { email: null }, favourites: {}, history: [] };
     }
   } catch (e) {
-    return { user: null, favourites: {}, history: [] };
+    return { user: { email: null }, favourites: {}, history: [] };
   }
 };
 

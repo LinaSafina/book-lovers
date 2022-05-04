@@ -6,7 +6,6 @@ import favouritesReducer from './favourites-slice';
 import userReducer from './user-slice';
 import getUserData from '../helpers/getUserData';
 import { apiSlice } from './api-slice';
-import { RootState } from '../types/types';
 
 const preloadedState: { user: any; history: any; favourites: any } =
   getUserData();

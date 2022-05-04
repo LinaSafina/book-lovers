@@ -27,10 +27,8 @@ const BookList: React.FC<{ books: BookData[]; searchParams: {} }> = React.memo(
         (previousPage === 'history' || clickedComponent === 'pagination') &&
         isFirstLoading === false
       ) {
-        console.log(isFirstLoading, previousPage, clickedComponent);
         return;
       } else {
-        console.log(isFirstLoading, previousPage, clickedComponent);
         dispatch(historyActions.add(searchParams));
 
         isFirstLoading = false;

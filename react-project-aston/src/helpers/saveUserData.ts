@@ -1,12 +1,4 @@
 const saveUserData = (store: any) => (next: any) => (action: any) => {
-  function logoutActionCreator() {
-    return (dispatch: any) => {
-      dispatch({ type: 'user/logout' });
-      dispatch({ type: 'history/deleteAll' });
-      dispatch({ type: 'favourites/deleteAll' });
-    };
-  }
-
   switch (action.type) {
     case 'user/logout': {
       const savedStore = localStorage.getItem('store');
@@ -18,12 +10,12 @@ const saveUserData = (store: any) => (next: any) => (action: any) => {
         favourites: userData.favourites,
       };
 
-      localStorage.setItem('store', JSON.stringify(savedStore));
+      localStorage.setItem('store', JSON.stringify(parsedSavedStore));
       localStorage.removeItem('currentUser');
       localStorage.removeItem('history');
       localStorage.removeItem('favourites');
 
-      let result = next(logoutActionCreator());
+      let result = next(action);
 
       return result;
     }
@@ -73,7 +65,7 @@ const saveUserData = (store: any) => (next: any) => (action: any) => {
       } else {
         localStorage.setItem('currentUser', JSON.stringify(action.payload));
         parsedSavedStore[action.payload] = { user: { email: action.payload } };
-        localStorage.setItem('store', JSON.stringify(savedStore));
+        localStorage.setItem('store', JSON.stringify(parsedSavedStore));
       }
 
       break;

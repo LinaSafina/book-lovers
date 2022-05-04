@@ -9,7 +9,7 @@ const ThemeContext = React.createContext({
 
 export const ThemeProvider: React.FC<Props> = (props) => {
   const [theme, setTheme] = useState(
-    () => localStorage.getItem('theme') || 'oceans'
+    () => localStorage.getItem('theme') || 'ocean'
   );
   const changeTheme = (chosenTheme: string) => {
     if (theme === chosenTheme) {

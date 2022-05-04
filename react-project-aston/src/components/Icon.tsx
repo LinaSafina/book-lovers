@@ -4,7 +4,6 @@ const Icon: React.FC<{
   classes: string;
   onIconClick: (event: React.MouseEvent) => void;
 }> = (props) => {
-  // div сделать кликабельным
   return (
     <div className='icon' onClick={props.onIconClick}>
       <svg

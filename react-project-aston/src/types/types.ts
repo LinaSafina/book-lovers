@@ -28,17 +28,6 @@ export type RootState = {
   user: { email: string };
 };
 
-// export type UserData = {
-//   history: {
-//     search: string;
-//     copyright: boolean | string;
-//     languages: string | string[];
-//   }[];
-//   favourites: { [index: string]: boolean };
-//   user: { email: string };
-//   api: {};
-// };
-
 export type LocationState = {
   page?: string;
   component?: string;
