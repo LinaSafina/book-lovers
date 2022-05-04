@@ -1,10 +1,11 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
 import { userActions } from '../../store/user-slice';
 import Wrapper from './Wrapper';
+import ThemeContext from '../../store/theme-context';
 
 const activeLinkStyle = {
   textDecoration: 'underline',
@@ -19,6 +20,7 @@ const Header = () => {
   const favourites = useSelector((state) => state.favourites);
   const amountOfFavourites = Object.keys(favourites).length;
   const [isBtnAnimated, setIsBtnAnimated] = useState(false);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     setIsBtnAnimated(true);
@@ -30,6 +32,10 @@ const Header = () => {
   const favouritesBadgeClasses = classNames('favourites-badge', {
     animated: isBtnAnimated,
   });
+  const headerClasses = classNames('header', {
+    ocean: theme === 'ocean',
+    violet: theme === 'violet',
+  });
 
   const logoutHandler = () => {
     dispatch(userActions.logout());
@@ -37,7 +43,7 @@ const Header = () => {
   };
 
   return (
-    <header className='header'>
+    <header className={headerClasses}>
       <Wrapper>
         <div className='flex-2-column'>
           <div className='logo'>

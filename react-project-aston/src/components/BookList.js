@@ -1,37 +1,44 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import React from 'react';
 
 import BookSummary from './BookSummary';
 import { historyActions } from '../store/history-slice';
+import { useEffect } from 'react';
 
-let isFirstLoading = true;
-
-const BookList = (props) => {
+const BookList = React.memo((props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { searchParams } = props;
+  const location = useLocation();
+  const previousPage = location.state?.page;
+  const clickedComponent = location.state?.component
 
   const clickCardHandler = (bookId) => {
     navigate(`/details/${bookId}`);
   };
 
-  if (isFirstLoading) {
-    isFirstLoading = false;
-  } else {
-    dispatch(historyActions.add(Object.fromEntries(props.searchParams)));
-    isFirstLoading = true;
-  }
+  useEffect(() => {
+    if (previousPage === 'history'||clickedComponent==='pagination') {
+      return;
+    }
+
+    dispatch(historyActions.add(searchParams));
+
+    return;
+  }, [dispatch, searchParams, previousPage, clickedComponent]);
 
   const bookList = props.books.map((book) => {
     return (
       <BookSummary
         key={book.id}
         book={book}
-        onClick={clickCardHandler.bind(null, book.id)}
+        onClick={()=>clickCardHandler(book.id)}
       />
     );
   });
 
   return <ul className='book-list'>{bookList}</ul>;
-};
+});
 
 export default BookList;

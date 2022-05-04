@@ -18,7 +18,8 @@ const History = () => {
       navigate(
         `/search?search=${item.search || 'all'}&copyright=${
           item.copyright || 'all'
-        }&languages=${item.languages || 'all'}&page=1`
+        }&languages=${item.languages || 'all'}&page=1`,
+        { state: { page: 'history' } }
       );
     };
 

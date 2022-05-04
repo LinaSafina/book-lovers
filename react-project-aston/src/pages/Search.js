@@ -1,9 +1,9 @@
-import { Fragment } from 'react';
 import {
   useSearchParams,
   useNavigate,
   createSearchParams,
 } from 'react-router-dom';
+import { useCallback} from 'react';
 
 import BookList from '../components/BookList';
 import Loading from '../components/Layout/Loading';
@@ -18,14 +18,22 @@ const Search = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const filterLogic = (param) => {
-    return searchCategories.some(
-      (elem) => param[0] === elem && param[1] !== searchAll
-    );
-  };
+  const filterValidParams = useCallback((param) => {
+    return searchCategories.some((elem) => param[0] === elem);
+  },[]);
+
+  const filterEmptyParams = useCallback((param) => {
+    return param[1] !== searchAll;
+  },[]);
+
+  const filteredValidParams = Object.fromEntries(
+    [...searchParams]
+      .filter(filterValidParams)
+      .filter((param) => param !== 'page')
+  );
 
   const filteredSearchParams = Object.fromEntries(
-    [...searchParams].filter(filterLogic)
+    [...searchParams].filter(filterValidParams).filter(filterEmptyParams)
   );
 
   const query = createSearchParams(filteredSearchParams).toString();
@@ -33,8 +41,20 @@ const Search = () => {
   const { data, isFetching, isSuccess, isError, error } =
     useGetBooksQuery(query);
 
-  let count = 0;
+  const pageChangeHandler = useCallback(
+    (clickedPage) => {
+      navigate({
+        path: '',
+        search: createSearchParams({
+          ...filteredValidParams,
+          page: clickedPage,
+        }).toString(),
+      }, {state: {component:'pagination'}});
+    },
+    [filteredValidParams, navigate]
+  );
 
+  let count = 0;
   let content = (
     <p className='info'>
       Sorry, we couldn't find any books. Change the search parameters and try
@@ -51,7 +71,30 @@ const Search = () => {
     count = data.count;
 
     if (books.length > 0) {
-      content = <BookList books={books} searchParams={[...searchParams]} />;
+      content = (
+        <>
+          <p className='search-results'>
+            We have found <span className='bold'>{count}</span> books
+          </p>
+          <Pagination
+            pagination={{
+              onPageChange: pageChangeHandler,
+              totalCount: count,
+              currentPage: parseInt(searchParams.get('page')) || 1,
+              pageSize: 32,
+            }}
+          />
+          <BookList books={books} searchParams={filteredValidParams} />;
+          <Pagination
+            pagination={{
+              onPageChange: pageChangeHandler,
+              totalCount: count,
+              currentPage: parseInt(searchParams.get('page')) || 1,
+              pageSize: 32,
+            }}
+          />
+        </>
+      );
     }
   }
 
@@ -59,45 +102,17 @@ const Search = () => {
     content = <p className='info'>{error}</p>;
   }
 
-  const pageChangeHandler = (clickedPage) => {
-    const currentSearchParams = { ...filteredSearchParams, page: clickedPage };
-    navigate({
-      path: '',
-      search: createSearchParams(currentSearchParams).toString(),
-    });
-  };
-
   return (
     <Wrapper>
       <div className='search-page'>
         <SearchForm
           defaultValues={{
-            search: searchParams.get('search'),
-            languages: searchParams.get('languages'),
-            copyright: searchParams.get('copyright'),
+            search: filteredSearchParams.search||'',
+            languages: filteredSearchParams.languages||searchAll,
+            copyright: filteredSearchParams.copyright||searchAll,
           }}
         />
-
-        <p className='search-results'>
-          We have found <span className='bold'>{count}</span> books
-        </p>
-        <Pagination
-          pagination={{
-            onPageChange: pageChangeHandler,
-            totalCount: count,
-            currentPage: parseInt(searchParams.get('page')),
-            pageSize: 32,
-          }}
-        />
-        <Fragment>{content}</Fragment>
-        <Pagination
-          pagination={{
-            onPageChange: pageChangeHandler,
-            totalCount: count,
-            currentPage: parseInt(searchParams.get('page')),
-            pageSize: 32,
-          }}
-        />
+        <>{content}</>
       </div>
     </Wrapper>
   );

@@ -6,11 +6,35 @@
   left: 0;
   right: 0;
   width: 100%;
-  background-color: $color-blue;
+
   color: $color-white;
   -webkit-box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
   -moz-box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
   box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
+}
+
+.header.ocean {
+  background-color: $color-blue;
+  .logo {
+    color: $color-light-blue;
+  }
+  a {
+    &:hover {
+      color: $color-light-blue;
+    }
+  }
+}
+
+header.violet {
+  background-color: $color-violet;
+  .logo {
+    color: $color-light-violet;
+  }
+  a {
+    &:hover {
+      color: $color-light-violet;
+    }
+  }
 }
 
 .flex-2-column {
@@ -21,7 +45,6 @@
 }
 
 .logo:hover {
-  color: $color-light-blue;
   cursor: pointer;
 }
 
@@ -44,7 +67,6 @@
         font-size: 1.2em;
         &:hover {
           cursor: pointer;
-          color: $color-light-blue;
         }
         .favourites-badge {
           border: 1px solid $color-white;
@@ -60,6 +82,18 @@
         }
         .animated {
           animation: bump 500ms ease-out;
+        }
+      }
+    }
+  }
+}
+
+.navigation {
+  ul {
+    li {
+      a {
+        &:hover {
+          cursor: pointer;
         }
       }
     }

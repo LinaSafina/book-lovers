@@ -1,8 +1,22 @@
 .footer {
-  height: 50px;
+  height: 100px;
   @include flex-center();
   font-size: 1.6rem;
   font-weight: 700;
-  background-color: $color-blue;
   color: $color-white;
+  ul {
+    @include flex-center();
+    column-gap: 10vw;
+    li {
+      cursor: pointer;
+    }
+  }
+}
+
+.footer.ocean {
+  background-color: $color-blue;
+}
+
+.footer.violet {
+  background-color: $color-violet;
 }

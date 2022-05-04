@@ -1,48 +1,80 @@
-import { useRef } from 'react';
-import { useNavigate, createSearchParams } from 'react-router-dom';
+import { useState, useCallback, useEffect } from 'react';
+import {
+  useNavigate,
+  createSearchParams,
+  useSearchParams,
+} from 'react-router-dom';
+import debounce from 'lodash.debounce';
 
 import searchAll from '../constants/searchAll';
 
+let isFirstLoading = true;
+
 const SearchForm = (props) => {
-  const searchInputRef = useRef();
-  const langInputRef = useRef();
-  const copyrightInputRef = useRef();
   const navigate = useNavigate();
   const { search, languages, copyright } = props.defaultValues;
+  const [searchInput, setSearchInput] = useState(search);
+  const [langInput, setLangInput] = useState(languages);
+  const [copyrightInput, setCopyrightInput] = useState(copyright);
+  const [searchParams] = useSearchParams();
 
-  const submitFormHandler = (event) => {
-    event.preventDefault();
+  const submitFormHandler = (e) => {
+    e.preventDefault();
+  };
 
-    const enteredSearch = searchInputRef.current.value || searchAll;
-    const enteredLang = langInputRef.current.value || searchAll;
-    const enteredCopyright = copyrightInputRef.current.value || searchAll;
+  const delayedSearchHandler = useCallback(() => {
+    const newSearchParams = createSearchParams({
+      search: searchInput,
+      copyright: copyrightInput,
+      languages: langInput,
+      page: searchParams.get('page') || 1,
+    }).toString();
 
-    if (
-      search === enteredSearch &&
-      copyright === enteredCopyright &&
-      languages === enteredLang
-    ) {
+    if (searchParams.toString() === newSearchParams) {
       return;
     }
 
     navigate({
       pathname: '',
-      search: createSearchParams({
-        search: enteredSearch,
-        copyright: enteredCopyright,
-        languages: enteredLang,
-        page: 1,
-      }).toString(),
+      search: newSearchParams,
     });
+  },[copyrightInput,langInput,navigate,searchInput, searchParams]);
+
+  const delayedSearch = useCallback(debounce(delayedSearchHandler, 1000), [
+    searchInput,
+    langInput,
+    copyrightInput,
+  ]);
+
+  const changeInputHandler = (e) => {
+    setSearchInput(e.target.value);
   };
+  const changeLangHandler = (e) => {
+    setLangInput(e.target.value);
+  };
+  const changeCopyrightHandler = (e) => {
+    setCopyrightInput(e.target.value);
+  };
+
+  useEffect(() => {
+    if (isFirstLoading) {
+      isFirstLoading = false;
+
+      return;
+    }
+
+    delayedSearch();
+
+    return delayedSearch.cancel;
+  }, [searchInput, langInput, copyrightInput, delayedSearch]);
 
   return (
     <form className='form search-form' onSubmit={submitFormHandler}>
       <div className='form__control'>
-        <input ref={searchInputRef} defaultValue={search} />
+        <input value={searchInput} onChange={changeInputHandler} />
       </div>
       <div className='form__control'>
-        <select ref={langInputRef} defaultValue={languages}>
+        <select value={langInput} onChange={changeLangHandler}>
           <option disabled>Language</option>
           <option value={searchAll}>All</option>
           <option value='en'>English</option>
@@ -50,18 +82,12 @@ const SearchForm = (props) => {
         </select>
       </div>
       <div className='form__control'>
-        <select ref={copyrightInputRef} defaultValue={copyright}>
+        <select value={copyrightInput} onChange={changeCopyrightHandler}>
           <option disabled>Copyright</option>
           <option value={searchAll}>all</option>
           <option value='true'>yes</option>
           <option value='false'>no</option>
-          <option value='null'>unknown</option>
         </select>
-      </div>
-      <div className='form__action'>
-        <button className='button' type='submit'>
-          Search
-        </button>
       </div>
     </form>
   );

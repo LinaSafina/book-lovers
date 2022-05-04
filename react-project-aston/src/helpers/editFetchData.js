@@ -11,7 +11,7 @@ const editFetchData = (data) => {
   return {
     ...data,
     authors,
-    cover: bookCover,
+    cover:bookCover,
     downloadCount: data['download_count'],
   };
 };
