@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BookData, BooksData } from '../types/types';
 
 export const apiSlice = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://gutendex.com/books' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://gutendex.com/books' }),
   endpoints: (builder) => ({
     getBookById: builder.query({
       query: (id) => `/${id}`,
