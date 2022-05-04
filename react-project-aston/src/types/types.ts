@@ -10,7 +10,7 @@ export type BookData = {
   download_count: number;
   languages: string[];
   subjects: string[];
-  authors: object[];
+  authors: { name: string }[];
 };
 
 export type BooksData = {
@@ -24,16 +24,39 @@ export type RootState = {
     copyright: boolean | string;
     languages: string | string[];
   }[];
-  favourites: { string: boolean };
+  favourites: { [index: string]: boolean };
   user: { email: string };
-  api: {};
 };
+
+// export type UserData = {
+//   history: {
+//     search: string;
+//     copyright: boolean | string;
+//     languages: string | string[];
+//   }[];
+//   favourites: { [index: string]: boolean };
+//   user: { email: string };
+//   api: {};
+// };
 
 export type LocationState = {
   page?: string;
   component?: string;
 };
 
-export type FavouriteObject = {
-  string: boolean;
+export type PaginationType = {
+  totalCount: number;
+  pageSize: number;
+  siblingCount?: number;
+  currentPage?: number;
 };
+
+export type FavouritesType = {
+  [index: string]: boolean;
+};
+
+export type HistoryType = {
+  search: string;
+  copyright: boolean | string;
+  languages: string | string[];
+}[];

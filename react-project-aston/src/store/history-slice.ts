@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialHistoryState = [];
+import { HistoryType } from '../types/types';
+
+const initialHistoryState: HistoryType | undefined = [];
 
 const historySlice = createSlice({
   name: 'history',

@@ -27,11 +27,11 @@ const Pagination: React.FC<{
     pageSize,
   });
 
-  if (currentPage === 0 || paginationRange?.length < 2) {
+  if (paginationRange!.length < 2 || currentPage === 0) {
     return null;
   }
 
-  let lastPage = paginationRange[paginationRange?.length - 1];
+  let lastPage = paginationRange[paginationRange!.length - 1];
 
   const onFirst = () => {
     onPageChange(1);
@@ -68,7 +68,7 @@ const Pagination: React.FC<{
         {'<'}
       </button>
       {paginationRange.map((pageNumber, index) => {
-        if (pageNumber === 'DOTS') {
+        if (pageNumber === 0) {
           return (
             <span key={Math.random().toString()} className='pagination-item'>
               &#8230;

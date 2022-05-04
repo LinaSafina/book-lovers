@@ -18,11 +18,11 @@ const Search = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const filterValidParams = useCallback((param) => {
+  const filterValidParams = useCallback((param: [string, string]) => {
     return searchCategories.some((elem) => param[0] === elem);
   }, []);
 
-  const filterEmptyParams = useCallback((param) => {
+  const filterEmptyParams = useCallback((param: [string, string]) => {
     return param[1] !== searchAll;
   }, []);
 
@@ -43,7 +43,7 @@ const Search = () => {
   const pageChangeHandler = useCallback(
     (clickedPage: number) => {
       navigate(
-        `${createSearchParams({
+        `?${createSearchParams({
           ...filteredValidParams,
           page: clickedPage.toString(),
         }).toString()}`,
@@ -79,7 +79,7 @@ const Search = () => {
             pagination={{
               onPageChange: pageChangeHandler,
               totalCount: count,
-              currentPage: parseInt(searchParams.get('page')) || 1,
+              currentPage: parseInt(searchParams.get('page') || '') || 1,
               pageSize: 32,
             }}
           />
@@ -88,7 +88,7 @@ const Search = () => {
             pagination={{
               onPageChange: pageChangeHandler,
               totalCount: count,
-              currentPage: parseInt(searchParams.get('page')) || 1,
+              currentPage: parseInt(searchParams.get('page') || '') || 1,
               pageSize: 32,
             }}
           />

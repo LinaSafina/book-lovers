@@ -3,6 +3,7 @@ import {
   useNavigate,
   createSearchParams,
   useSearchParams,
+  useLocation,
 } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 
@@ -19,6 +20,8 @@ const SearchForm: React.FC<{
   const [langInput, setLangInput] = useState<string>(languages);
   const [copyrightInput, setCopyrightInput] = useState<string>(copyright);
   const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const pathname = location.pathname;
 
   const submitFormHandler = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +29,7 @@ const SearchForm: React.FC<{
 
   const delayedSearchHandler = useCallback(() => {
     const newSearchParams = createSearchParams({
-      search: searchInput,
+      search: searchInput || searchAll,
       copyright: copyrightInput,
       languages: langInput,
       page: searchParams.get('page') || '1',
@@ -36,10 +39,7 @@ const SearchForm: React.FC<{
       return;
     }
 
-    navigate({
-      pathname: '',
-      search: newSearchParams,
-    });
+    navigate(`?${newSearchParams}`, { state: { previousPage: pathname } });
   }, [copyrightInput, langInput, navigate, searchInput, searchParams]);
 
   const delayedSearch = useCallback(debounce(delayedSearchHandler, 1000), [

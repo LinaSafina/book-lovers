@@ -6,6 +6,8 @@ import BookSummary from './BookSummary';
 import { historyActions } from '../store/history-slice';
 import { BookData, LocationState } from '../types/types';
 
+let isFirstLoading = true;
+
 const BookList: React.FC<{ books: BookData[]; searchParams: {} }> = React.memo(
   (props) => {
     const navigate = useNavigate();
@@ -21,13 +23,20 @@ const BookList: React.FC<{ books: BookData[]; searchParams: {} }> = React.memo(
     };
 
     useEffect(() => {
-      if (previousPage === 'history' || clickedComponent === 'pagination') {
+      if (
+        (previousPage === 'history' || clickedComponent === 'pagination') &&
+        isFirstLoading === false
+      ) {
+        console.log(isFirstLoading, previousPage, clickedComponent);
+        return;
+      } else {
+        console.log(isFirstLoading, previousPage, clickedComponent);
+        dispatch(historyActions.add(searchParams));
+
+        isFirstLoading = false;
+
         return;
       }
-
-      dispatch(historyActions.add(searchParams));
-
-      return;
     }, [dispatch, searchParams, previousPage, clickedComponent]);
 
     const bookList = props.books.map((book) => {

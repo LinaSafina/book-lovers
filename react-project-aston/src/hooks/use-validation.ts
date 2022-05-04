@@ -4,7 +4,7 @@ const useValidation = (inputType: string) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isInvalid, setIsInvalid] = useState(false);
 
-  const validateInput = (input) => {
+  const validateInput = (input: string) => {
     switch (inputType) {
       case 'email':
         return input.trim().length >= 3 && input.includes('@');

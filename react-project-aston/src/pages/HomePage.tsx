@@ -11,7 +11,7 @@ const HomePage = () => {
   const submitSearchHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    const enteredSearchValue = searchInputRef.current.value;
+    const enteredSearchValue = searchInputRef.current!.value;
 
     navigate(
       `/search?search=${

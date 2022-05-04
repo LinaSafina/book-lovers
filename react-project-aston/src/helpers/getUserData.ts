@@ -1,3 +1,5 @@
+import { RootState } from '../types/types';
+
 const getUserData = () => {
   try {
     let currentUser = localStorage.getItem('currentUser');
@@ -6,14 +8,17 @@ const getUserData = () => {
     currentUser = currentUser ? JSON.parse(currentUser) : undefined;
 
     if (currentUser) {
-      return {
+      const initialUserData = {
         user: { email: currentUser },
-        history: JSON.parse(history) || [],
-        favourites: JSON.parse(favourites) || {},
+        history: history ? JSON.parse(history) : [],
+        favourites: favourites ? JSON.parse(favourites) : {},
       };
+      return initialUserData;
+    } else {
+      return { user: null, favourites: {}, history: [] };
     }
   } catch (e) {
-    return undefined;
+    return { user: null, favourites: {}, history: [] };
   }
 };
 

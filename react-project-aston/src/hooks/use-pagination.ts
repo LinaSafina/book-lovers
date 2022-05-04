@@ -1,16 +1,17 @@
 import { useMemo } from 'react';
+import { PaginationType } from '../types/types';
 
 const usePagination = ({
   totalCount,
   pageSize,
   siblingCount = 1,
   currentPage = 1,
-}) => {
+}: PaginationType) => {
   const paginationRange = useMemo(() => {
     const totalPageCount = Math.ceil(totalCount / pageSize);
     const totalPageNumbers = siblingCount + 5;
 
-    const range = (start, end) => {
+    const range = (start: number, end: number) => {
       let length = end - start + 1;
       return Array(length)
         .fill(0)
@@ -44,7 +45,7 @@ const usePagination = ({
       let leftItemCount = 3 + 2 * siblingCount;
       let leftRange = range(1, leftItemCount);
 
-      return [...leftRange, 'DOTS', totalPageCount];
+      return [...leftRange, 0, totalPageCount];
     }
 
     /*
@@ -57,7 +58,7 @@ const usePagination = ({
         totalPageCount
       );
 
-      return [firstPageIndex, 'DOTS', ...rightRange];
+      return [firstPageIndex, 0, ...rightRange];
     }
 
     /*
@@ -66,11 +67,11 @@ const usePagination = ({
     if (shouldShowLeftDots && shouldShowRightDots) {
       let middleRange = range(leftSiblingIndex, rightSiblingIndex);
 
-      return [firstPageIndex, 'DOTS', ...middleRange, 'DOTS', lastPageIndex];
+      return [firstPageIndex, 0, ...middleRange, 0, lastPageIndex];
     }
   }, [totalCount, pageSize, siblingCount, currentPage]);
 
-  return paginationRange;
+  return paginationRange || [];
 };
 
 export default usePagination;

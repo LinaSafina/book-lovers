@@ -5,7 +5,7 @@ import useValidation from '../hooks/use-validation';
 import { userActions } from '../store/user-slice';
 import React from 'react';
 
-const AuthForm: React.FC<{ header: string; type: string }> = (props) => {
+const AuthForm: React.FC<{ header: any; type: any }> = (props) => {
   const dispatch = useDispatch();
 
   const {

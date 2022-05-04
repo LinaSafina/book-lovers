@@ -6,6 +6,10 @@ import favouritesReducer from './favourites-slice';
 import userReducer from './user-slice';
 import getUserData from '../helpers/getUserData';
 import { apiSlice } from './api-slice';
+import { RootState } from '../types/types';
+
+const preloadedState: { user: any; history: any; favourites: any } =
+  getUserData();
 
 const store = configureStore({
   reducer: {
@@ -16,7 +20,7 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(saveUserData, apiSlice.middleware),
-  preloadedState: getUserData(),
+  preloadedState: preloadedState,
 });
 
 export default store;

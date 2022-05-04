@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialFavouritesState = {};
+import { FavouritesType } from '../types/types';
+
+const initialFavouritesState: FavouritesType = {};
 
 const favouritesSlice = createSlice({
   name: 'favourites',
   initialState: initialFavouritesState,
   reducers: {
-    toggleFavourites(state, action) {
+    toggleFavourites(state: FavouritesType, action) {
       const id = action.payload;
       const isFavourite = state[id];
 

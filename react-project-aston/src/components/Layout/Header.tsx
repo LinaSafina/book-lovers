@@ -86,7 +86,7 @@ const Header = () => {
                     <NavLink
                       to='/favourites'
                       style={({ isActive }) =>
-                        isActive ? activeLinkStyle : undefined
+                        isActive ? activeLinkStyle : linkStyle
                       }
                     >
                       Favourites
@@ -99,7 +99,7 @@ const Header = () => {
                     <NavLink
                       to='/history'
                       style={({ isActive }) =>
-                        isActive ? activeLinkStyle : undefined
+                        isActive ? activeLinkStyle : linkStyle
                       }
                     >
                       History
@@ -109,7 +109,7 @@ const Header = () => {
                     <NavLink
                       to='/signin'
                       style={({ isActive }) =>
-                        isActive ? activeLinkStyle : undefined
+                        isActive ? activeLinkStyle : linkStyle
                       }
                       onClick={logoutHandler}
                     >
