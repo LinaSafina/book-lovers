@@ -1,5 +1,3 @@
-import { RootState } from '../types/types';
-
 const getUserData = () => {
   try {
     let currentUser = localStorage.getItem('currentUser');

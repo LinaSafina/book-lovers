@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 
 import editFetchData from '../helpers/editFetchData';
-import { BookData } from '../types/types';
 import HeartIcon from './HeartIcon';
 
 const BookDetails: React.FC<{ book: any }> = (props) => {

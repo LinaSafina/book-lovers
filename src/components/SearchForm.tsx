@@ -40,7 +40,14 @@ const SearchForm: React.FC<{
     }
 
     navigate(`?${newSearchParams}`, { state: { previousPage: pathname } });
-  }, [copyrightInput, langInput, navigate, searchInput, searchParams]);
+  }, [
+    copyrightInput,
+    langInput,
+    navigate,
+    searchInput,
+    searchParams,
+    pathname,
+  ]);
 
   const delayedSearch = useCallback(debounce(delayedSearchHandler, 1000), [
     searchInput,
