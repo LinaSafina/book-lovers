@@ -1,4 +1,7 @@
 .favourites {
   width: 90%;
   margin: 0 auto;
+  .book-summary {
+    flex-basis: 40%;
+  }
 }

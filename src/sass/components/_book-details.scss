@@ -1,5 +1,6 @@
 .book-details {
-  max-width: 50vw;
+  width: 90vw;
+  max-width: 600px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -12,8 +13,6 @@
     }
   }
   .book-description {
-    width: 60%;
-    flex-basis: 60%;
     text-align: left;
     padding: 20px;
   }
@@ -23,5 +22,10 @@
   }
   .icon {
     width: 0px;
+  }
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+    row-gap: 10px;
+    width: 100%;
   }
 }

@@ -1,5 +1,6 @@
 .book-details {
-  max-width: 50vw;
+  width: 90vw;
+  max-width: 600px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -15,8 +16,6 @@
   max-height: 400px;
 }
 .book-details .book-description {
-  width: 60%;
-  flex-basis: 60%;
   text-align: left;
   padding: 20px;
 }
@@ -27,11 +26,19 @@
 .book-details .icon {
   width: 0px;
 }
+@media screen and (max-width: 767px) {
+  .book-details {
+    flex-direction: column;
+    row-gap: 10px;
+    width: 100%;
+  }
+}
 
 .book-summary {
   display: flex;
   row-gap: 10px;
-  flex-basis: 20%;
+  flex-basis: 30%;
+  min-width: 300px;
   flex-direction: column;
 }
 .book-summary:hover {
@@ -56,14 +63,11 @@
   display: flex;
   justify-content: center;
   column-gap: 30px;
+  flex-basis: 30%;
   row-gap: 20px;
   flex-wrap: wrap;
   margin: 0 auto;
   align-items: stretch;
-}
-
-.search-results {
-  margin: 20px auto;
 }
 
 .card {
@@ -179,12 +183,25 @@
 .search-form .form__action {
   margin: 0;
 }
+@media screen and (max-width: 767px) {
+  .search-form .form__control,
+.search-form .form__action {
+    width: 100%;
+  }
+}
 .search-form select {
   min-width: 150px;
   cursor: pointer;
 }
 .search-form input {
   min-width: 200px;
+}
+@media screen and (max-width: 767px) {
+  .search-form {
+    flex-direction: column;
+    row-gap: 10px;
+    width: 100%;
+  }
 }
 
 .icon {
@@ -216,8 +233,14 @@
   flex-basis: 25%;
   border: 2px solid #f0efeb;
   font-size: 1.6rem;
-  padding: 1em;
+  padding: 1rem 3rem;
   cursor: pointer;
+}
+@media screen and (max-width: 767px) {
+  .history-item {
+    padding: 1rem 0.4rem;
+    column-gap: 1vw;
+  }
 }
 
 .header {
@@ -228,10 +251,17 @@
   left: 0;
   right: 0;
   width: 100%;
+  display: flex;
+  align-items: center;
   color: #ffffff;
   -webkit-box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
   -moz-box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
   box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
+}
+@media screen and (max-width: 767px) {
+  .header .logo {
+    font-size: 1rem;
+  }
 }
 
 .header.ocean {
@@ -243,6 +273,11 @@
 .header.ocean a:hover {
   color: #bbdefb;
 }
+@media screen and (max-width: 767px) {
+  .header.ocean .navigation {
+    background-color: #007ea7;
+  }
+}
 
 header.violet {
   background-color: #5a189a;
@@ -253,12 +288,29 @@ header.violet .logo {
 header.violet a:hover {
   color: #c77dff;
 }
+@media screen and (max-width: 767px) {
+  header.violet .navigation {
+    background-color: #5a189a;
+  }
+}
 
 .flex-2-column {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 15px 30px;
+  width: 90%;
+  margin: 0 auto;
+}
+.flex-2-column .burger-icon {
+  display: none;
+}
+@media screen and (max-width: 767px) {
+  .flex-2-column .burger-icon {
+    display: block;
+    height: 22px;
+    width: 30px;
+    background: linear-gradient(to bottom, white 0%, white 9%, transparent 9%, transparent 45.5%, white 45.5%, white 54.5%, transparent 54.5%, transparent 91%, white 91%, white 100%);
+  }
 }
 
 .logo:hover {
@@ -309,6 +361,30 @@ header.violet a:hover {
   cursor: pointer;
 }
 
+@media screen and (max-width: 767px) {
+  .navigation {
+    position: absolute;
+    top: 100px;
+    right: 0;
+    min-width: 200px;
+    max-height: 0;
+    overflow: hidden;
+    -webkit-box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 7px 11px 0px rgba(34, 60, 80, 0.2);
+  }
+
+  .opened {
+    max-height: 100vh;
+    padding: 20px;
+    transition: all 1s;
+  }
+  .opened ul {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2vh;
+  }
+}
 @keyframes bump {
   0% {
     transform: scale(1);
@@ -418,6 +494,9 @@ header.violet a:hover {
   width: 90%;
   margin: 0 auto;
 }
+.favourites .book-summary {
+  flex-basis: 40%;
+}
 
 .history {
   display: flex;
@@ -480,10 +559,19 @@ header.violet a:hover {
   -moz-box-shadow: 7px 7px 11px 0px rgba(34, 60, 80, 0.2);
   box-shadow: 7px 7px 11px 0px rgba(34, 60, 80, 0.2);
 }
+@media screen and (max-width: 767px) {
+  .homepage .homepage__form {
+    flex-direction: column;
+    row-gap: 15px;
+  }
+}
 
 .search-page {
   width: 90%;
   margin: 0 auto;
+}
+.search-page .search-results {
+  margin: 20px auto;
 }
 
 * {

@@ -22,6 +22,7 @@ const Header = () => {
   const favourites = useSelector((state: RootState) => state.favourites);
   const amountOfFavourites = Object.keys(favourites).length;
   const [isBtnAnimated, setIsBtnAnimated] = useState(false);
+  const [isMenuOpened, setIsMenuOpened] = useState(false);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -38,10 +39,20 @@ const Header = () => {
     ocean: theme === 'ocean',
     violet: theme === 'violet',
   });
+  const navClasses = classNames('navigation', { opened: isMenuOpened });
 
   const logoutHandler = () => {
     dispatch(userActions.logout());
     navigate(0);
+    setIsMenuOpened(false);
+  };
+
+  const toggleMenuHandler = () => {
+    setIsMenuOpened((prevState) => !isMenuOpened);
+  };
+
+  const closeMenuHandler = () => {
+    setIsMenuOpened(false);
   };
 
   return (
@@ -49,12 +60,13 @@ const Header = () => {
       <Wrapper>
         <div className='flex-2-column'>
           <div className='logo'>
-            <Link to='/'>
+            <Link to='/' onClick={closeMenuHandler}>
               <h1>Book lover</h1>
               <span>Find your best paper friend here</span>
             </Link>
           </div>
-          <nav className='navigation'>
+          <div className='burger-icon icon' onClick={toggleMenuHandler}></div>
+          <nav className={navClasses}>
             <ul>
               {!user && (
                 <Fragment>
@@ -64,6 +76,7 @@ const Header = () => {
                       style={({ isActive }) =>
                         isActive ? activeLinkStyle : linkStyle
                       }
+                      onClick={closeMenuHandler}
                     >
                       Sign in
                     </NavLink>
@@ -74,6 +87,7 @@ const Header = () => {
                       style={({ isActive }) =>
                         isActive ? activeLinkStyle : linkStyle
                       }
+                      onClick={closeMenuHandler}
                     >
                       Sign up
                     </NavLink>
@@ -88,6 +102,7 @@ const Header = () => {
                       style={({ isActive }) =>
                         isActive ? activeLinkStyle : linkStyle
                       }
+                      onClick={closeMenuHandler}
                     >
                       Favourites
                       <span className={favouritesBadgeClasses}>
@@ -101,6 +116,7 @@ const Header = () => {
                       style={({ isActive }) =>
                         isActive ? activeLinkStyle : linkStyle
                       }
+                      onClick={closeMenuHandler}
                     >
                       History
                     </NavLink>

@@ -38,5 +38,9 @@
         box-shadow: 7px 7px 11px 0px rgba(34, 60, 80, 0.2);
       }
     }
+    @media screen and (max-width: 767px) {
+      flex-direction: column;
+      row-gap: 15px;
+    }
   }
 }
